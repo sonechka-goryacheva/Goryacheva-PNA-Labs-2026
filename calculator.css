@@ -1,0 +1,131 @@
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+}
+
+.plane-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('plane.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.author-box {
+    background: #ffcc00;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    width: 300px;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+}
+
+.author-box summary {
+    list-style: none;
+    text-align: center;
+}
+
+.author-box p {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.calculator-body {
+    background: #2b4358;
+    padding: 20px;
+    border-radius: 20px;
+    width: fit-content;
+}
+
+.result {
+    width: 260px;
+    height: 60px;
+    background: #4a4a4a;
+    margin-bottom: 20px;
+    padding-right: 15px;
+    border-radius: 10px;
+    color: white;
+    font-size: 2rem;
+    line-height: 60px;
+    text-align: right;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.buttons-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.button-row {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.my-btn {
+    flex: 1 1 0;
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: 0.1s;
+}
+
+.my-btn:hover {
+    filter: brightness(85%);
+}
+
+.my-btn:active {
+    filter: brightness(70%);
+}
+
+.my-btn.digit {
+    background: #ffcc00;
+    color: white;
+}
+
+.my-btn.operation {
+    background: #a0a0a0;
+    color: white;
+}
+
+.my-btn.execute {
+    background: #ffcc00;
+    color: white;
+}
+
+.my-btn.github {
+    background: #ffcc00;
+    color: white;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+.primary, .secondary {
+    display: none;
+}
