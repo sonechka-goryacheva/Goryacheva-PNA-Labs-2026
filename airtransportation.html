@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор авиаперевозок</title>
+    <link rel="stylesheet" href="airtransportation.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">Расчет стоимости авиаперевозок</div>
+    </header>
+    
+    <!-- кнопка смены темы  -->
+    <div class="theme-button-container">
+        <button id="theme-toggle" class="theme-btn">Сменить тему</button>
+    </div>
+    
+    <!-- меню заказы -->
+    <div class="dropdown">
+        <div class="dropdown-btn">
+            <span class="dropdown-text">Заказы</span>
+            <span class="dropdown-arrow">▼</span>
+        </div>
+        <div class="dropdown-content">
+            <!-- заказы в виде карточек -->
+            <div class="orders-list-dropdown">
+                <!-- карточка 1 -->
+                <div class="order-card-dropdown">
+                    <div class="order-card-header-dropdown">
+                        <span class="order-id-dropdown">Заказ #AV-101</span>
+                        <span class="order-status-dropdown status-active-dropdown">Активен</span>
+                    </div>
+                    <div class="order-card-details-dropdown">
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Маршрут:</span>
+                            <span class="detail-value-dropdown">Москва (SVO) → Симферополь (SIP)</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Груз:</span>
+                            <span class="detail-value-dropdown">Документы, 5 кг</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Дата:</span>
+                            <span class="detail-value-dropdown">15.03.2026</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Стоимость:</span>
+                            <span class="detail-value-dropdown price-dropdown">12 500 ₽</span>
+                        </div>
+                    </div>
+                    <div class="order-card-footer-dropdown">
+                        <button class="order-btn-dropdown view-btn-dropdown">Просмотр</button>
+                        <button class="order-btn-dropdown edit-btn-dropdown">Редактировать</button>
+                    </div>
+                </div>
+
+                <!-- карточка 2 -->
+                <div class="order-card-dropdown">
+                    <div class="order-card-header-dropdown">
+                        <span class="order-id-dropdown">Заказ #AV-102</span>
+                        <span class="order-status-dropdown status-completed-dropdown">Завершен</span>
+                    </div>
+                    <div class="order-card-details-dropdown">
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Маршрут:</span>
+                            <span class="detail-value-dropdown">Санкт-Петербург (LED) → Сочи (AER)</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Груз:</span>
+                            <span class="detail-value-dropdown">Оборудование, 45 кг</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Дата:</span>
+                            <span class="detail-value-dropdown">10.03.2026</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Стоимость:</span>
+                            <span class="detail-value-dropdown price-dropdown">34 800 ₽</span>
+                        </div>
+                    </div>
+                    <div class="order-card-footer-dropdown">
+                        <button class="order-btn-dropdown view-btn-dropdown">Просмотр</button>
+                        <button class="order-btn-dropdown edit-btn-dropdown">Редактировать</button>
+                    </div>
+                </div>
+
+                <!-- карточка 3 -->
+                <div class="order-card-dropdown">
+                    <div class="order-card-header-dropdown">
+                        <span class="order-id-dropdown">Заказ #AV-103</span>
+                        <span class="order-status-dropdown status-pending-dropdown">Ожидает</span>
+                    </div>
+                    <div class="order-card-details-dropdown">
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Маршрут:</span>
+                            <span class="detail-value-dropdown">Екатеринбург (SVX) → Новосибирск (OVB)</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Груз:</span>
+                            <span class="detail-value-dropdown">Продукты питания, 120 кг</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Дата:</span>
+                            <span class="detail-value-dropdown">18.03.2026</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Стоимость:</span>
+                            <span class="detail-value-dropdown price-dropdown">67 200 ₽</span>
+                        </div>
+                    </div>
+                    <div class="order-card-footer-dropdown">
+                        <button class="order-btn-dropdown view-btn-dropdown">Просмотр</button>
+                        <button class="order-btn-dropdown edit-btn-dropdown">Редактировать</button>
+                    </div>
+                </div>
+
+                <!-- карточка 4 -->
+                <div class="order-card-dropdown">
+                    <div class="order-card-header-dropdown">
+                        <span class="order-id-dropdown">Заказ #AV-104</span>
+                        <span class="order-status-dropdown status-active-dropdown">Активен</span>
+                    </div>
+                    <div class="order-card-details-dropdown">
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Маршрут:</span>
+                            <span class="detail-value-dropdown">Казань (KZN) → Дубай (DXB)</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Груз:</span>
+                            <span class="detail-value-dropdown">Электроника, 250 кг</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Дата:</span>
+                            <span class="detail-value-dropdown">22.03.2026</span>
+                        </div>
+                        <div class="order-detail-row-dropdown">
+                            <span class="detail-label-dropdown">Стоимость:</span>
+                            <span class="detail-value-dropdown price-dropdown">245 000 ₽</span>
+                        </div>
+                    </div>
+                    <div class="order-card-footer-dropdown">
+                        <button class="order-btn-dropdown view-btn-dropdown">Просмотр</button>
+                        <button class="order-btn-dropdown edit-btn-dropdown">Редактировать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- калькулятор -->
+    <div class="calculator">
+        <div class="calculator_body">
+            <div id="result" class="result">
+                0
+            </div>
+
+            <div>
+                <div>
+                    <button id="btn_op_clear" class="my-btn secondary">C</button>
+                    <button id="btn_op_sign" class="my-btn secondary">+/-</button>
+                    <button id="btn_op_percent" class="my-btn secondary">%</button>
+                    <button id="btn_op_div" class="my-btn primary">/</button>
+                </div>
+                <div>
+                    <button id="btn_digit_7" class="my-btn">7</button>
+                    <button id="btn_digit_8" class="my-btn">8</button>
+                    <button id="btn_digit_9" class="my-btn">9</button>
+                    <button id="btn_op_mult" class="my-btn primary">x</button>
+                </div>
+                <div>
+                    <button id="btn_digit_4" class="my-btn">4</button>
+                    <button id="btn_digit_5" class="my-btn">5</button>
+                    <button id="btn_digit_6" class="my-btn">6</button>
+                    <button id="btn_op_minus" class="my-btn primary">-</button>
+                </div>
+                <div>
+                    <button id="btn_digit_1" class="my-btn">1</button>
+                    <button id="btn_digit_2" class="my-btn">2</button>
+                    <button id="btn_digit_3" class="my-btn">3</button>
+                    <button id="btn_op_plus" class="my-btn primary">+</button>
+                </div>
+                <div>
+                    <button id="btn_digit_0" class="my-btn">0</button>
+                    <button id="btn_digit_dot" class="my-btn">.</button>
+                    <button id="btn_op_equal" class="my-btn primary execute">=</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- информация об авторе -->
+    <div class="author-information">
+        <details class="author-details">
+            <summary>Автор</summary>
+            <p>ФИО: Блинкова Ксения</p>
+            <p>Группа: ИУ5-41Б</p>
+            <p>Лабораторная работа №1</p>
+        </details>
+    </div>
+
+    <!-- кнопка GitHub -->
+    <div class="github-button-container">
+        <a href="https://github.com/KseniaBlinkova/Blinkova-PNA-Labs-2026.git" target="_blank" class="github-btn">МОЙ GitHub</a>
+    </div>
+
+    <script src="airtransportation.js"></script>
+</body>
+
+</html>

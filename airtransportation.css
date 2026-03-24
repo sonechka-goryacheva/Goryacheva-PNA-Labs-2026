@@ -1,0 +1,563 @@
+body {
+    background-size: auto 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+header {
+    background-image: url('plane-header.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 40px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    position: relative;
+    width: 100%;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+}
+
+.logo {
+    padding-top: 5px;
+    padding-left: 10px;
+    position: relative;
+    z-index: 1;
+    font-weight: normal;
+}
+
+.theme-button-container {
+    position: absolute;
+    top: 130px;
+    right: 30px;
+    z-index: 10;
+}
+
+.theme-btn {
+    background: #ffffff;
+    border: 2px solid #f0d246;
+    color: #000000;
+    padding: 8px 24px;
+    font-size: 0.9rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 0px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.theme-btn:hover {
+    background: #f0d246;
+    color: #000000;
+    transform: translateY(-2px);
+}
+
+.dropdown {
+    position: absolute;
+    top: 130px;
+    left: 30px;
+    z-index: 10;
+}
+
+.dropdown-btn {
+    background: #ffffff;
+    border: 2px solid #f0d246;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.dropdown-text {
+    font-size: 0.9rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    color: #000000;
+}
+
+.dropdown-arrow {
+    font-size: 0.7rem;
+    color: #000000;
+}
+
+.dropdown-btn:hover {
+    background: #f0d246;
+}
+
+.dropdown-btn:hover .dropdown-text,
+.dropdown-btn:hover .dropdown-arrow {
+    color: #000000;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 45px;
+    left: 0;
+    background-color: #ffffff;
+    min-width: 470px;
+    max-width: 470px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100;
+    padding: 20px;
+    border: 1px solid #f0d246;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+.orders-list-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.order-card-dropdown {
+    background: #f9f9f9;
+    border-left: 5px solid #f0d246;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.order-card-dropdown:hover {
+    background: #fff;
+    transform: translateX(5px);
+}
+
+.order-card-header-dropdown {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.order-id-dropdown {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.order-status-dropdown {
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-active-dropdown {
+    background-color: #f0d246;
+    color: #000000;
+}
+
+.status-completed-dropdown {
+    background-color: #c0c0c0;
+    color: #333;
+}
+
+.status-pending-dropdown {
+    background-color: #a9a9a9;
+    color: #ffffff;
+}
+
+.order-card-details-dropdown {
+    margin-bottom: 10px;
+}
+
+.order-detail-row-dropdown {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    font-size: 0.85rem;
+}
+
+.detail-label-dropdown {
+    font-weight: 600;
+    color: #666;
+}
+
+.detail-value-dropdown {
+    color: #333;
+}
+
+.price-dropdown {
+    font-weight: bold;
+    color: #350952;
+}
+
+.order-card-footer-dropdown {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.order-btn-dropdown {
+    padding: 5px 15px;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.view-btn-dropdown {
+    background-color: #ffffff;
+    border: 1px solid #f0d246;
+    color: #000000;
+}
+
+.view-btn-dropdown:hover {
+    background-color: #f0d246;
+    color: #000000;
+}
+
+.edit-btn-dropdown {
+    background-color: #350952;
+    color: #ffffff;
+    border: none;
+}
+
+.edit-btn-dropdown:hover {
+    background-color: #f0d246;
+    color: #000000;
+}
+
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.calculator_body {
+    background-color: #d9d9d9;
+    width: 340px;
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+.my-btn {
+    margin-right: 8px;
+    margin-top: 8px;
+    width: 65px;
+    height: 65px;
+    border-radius: 10px;
+    border: none;
+    background: #ffffff;
+    color: #000000;
+    font-size: 1.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    user-select: none;
+    line-height: 65px;
+    text-align: center;
+    display: inline-block;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+.my-btn:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
+.my-btn:active {
+    filter: brightness(130%);
+}
+
+.my-btn.primary {
+    background: #a9a9a9;
+    color: #ffffff;
+}
+
+.my-btn.primary:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
+.my-btn.secondary {
+    background: #c0c0c0;
+    color: #000000;
+}
+
+.my-btn.secondary:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
+.my-btn.execute {
+    width: 138px;
+    height: 65px;
+    border-radius: 10px;
+}
+
+.result {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 15px;
+    padding-right: 15px;
+    background: #a9a9a9;
+    text-align: right;
+    color: #ffffff;
+    font-size: 2rem;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 60px;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.my-btn:last-child {
+    margin-right: 0;
+}
+
+.calculator_body > div:last-child > div {
+    white-space: nowrap;
+}
+
+
+.author-information {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.author-details {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+}
+
+.author-details summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    background: #ffffff;
+    padding: 10px 28px;
+    border-radius: 0px;
+    border: 2px solid #f0d246;
+    color: #000000;
+    display: inline-block;
+    transition: all 0.3s ease;
+    list-style: none;
+}
+
+.author-details summary:hover {
+    background: #f0d246;
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(240, 210, 70, 0.3);
+}
+
+.author-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.author-details summary::before {
+    content: '▶';
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.author-details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.author-details p {
+    margin: 10px 0 5px 0;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    color: #555;
+    background: #ffffff;
+    border-radius: 0px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+
+.github-button-container {
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 40px;
+}
+
+.github-btn {
+    display: inline-block;
+    padding: 10px 28px;
+    background-color: #350952;
+    color: #ffffff;
+    border-radius: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+}
+
+.github-btn:hover {
+    background-color: #f0d246;
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(240, 210, 70, 0.3);
+}
+
+
+body.dark-theme {
+    background-color: #1a1a1a;
+}
+
+body.dark-theme .calculator_body {
+    background-color: #2d2d2d;
+}
+
+body.dark-theme .result {
+    background-color: #3a3a3a;
+    color: #ffffff;
+}
+
+body.dark-theme .my-btn {
+    background-color: #3a3a3a;
+    color: #ffffff;
+}
+
+body.dark-theme .my-btn:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
+body.dark-theme .my-btn.primary {
+    background-color: #4a4a4a;
+    color: #ffffff;
+}
+
+body.dark-theme .my-btn.secondary {
+    background-color: #555555;
+    color: #ffffff;
+}
+
+body.dark-theme .author-details summary {
+    background: #3a3a3a;
+    border: 2px solid #f0d246;
+    color: #ffffff;
+}
+
+body.dark-theme .author-details p {
+    background: #3a3a3a;
+    color: #dddddd;
+}
+
+body.dark-theme .github-btn {
+    background-color: #f0d246;
+    color: #000000;
+}
+
+body.dark-theme .github-btn:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/*темная тема для кнопки*/
+body.dark-theme .theme-btn {
+    background: #3a3a3a;
+    border-color: #f0d246;
+    color: #ffffff;
+}
+
+body.dark-theme .theme-btn:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
+/* темная тема для менб заказы */
+body.dark-theme .dropdown-btn {
+    background: #3a3a3a;
+    border-color: #f0d246;
+}
+
+body.dark-theme .dropdown-text,
+body.dark-theme .dropdown-arrow {
+    color: #ffffff;
+}
+
+body.dark-theme .dropdown-btn:hover {
+    background: #f0d246;
+}
+
+body.dark-theme .dropdown-btn:hover .dropdown-text,
+body.dark-theme .dropdown-btn:hover .dropdown-arrow {
+    color: #000000;
+}
+
+body.dark-theme .dropdown-content {
+    background-color: #2d2d2d;
+    border-color: #f0d246;
+}
+
+body.dark-theme .order-card-dropdown {
+    background: #3a3a3a;
+}
+
+body.dark-theme .order-id-dropdown {
+    color: #ffffff;
+}
+
+body.dark-theme .detail-label-dropdown {
+    color: #aaa;
+}
+
+body.dark-theme .detail-value-dropdown {
+    color: #ddd;
+}
+
+body.dark-theme .price-dropdown {
+    color: #f0d246;
+}
+
+body.dark-theme .view-btn-dropdown {
+    background-color: #3a3a3a;
+    border-color: #f0d246;
+    color: #ffffff;
+}
+
+body.dark-theme .view-btn-dropdown:hover {
+    background-color: #f0d246;
+    color: #000000;
+}
