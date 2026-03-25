@@ -1,0 +1,14 @@
+{
+  "name": "avia-cargo",
+  "version": "1.0.0",
+  "description": "Расчет стоимости авиаперевозки груза",
+  "main": "main.js",
+  "scripts": {
+    "start": "live-server"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.2.3"
+  }
+}
