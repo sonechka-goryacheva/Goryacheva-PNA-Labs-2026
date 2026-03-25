@@ -10,6 +10,7 @@ body {
     flex-direction: column;
     align-items: center;
     transition: background-color 0.3s ease;
+    background-color: #f5f5f5;
 }
 
 header {
@@ -72,6 +73,7 @@ header::before {
     transform: translateY(-2px);
 }
 
+/* меню заказы */
 .dropdown {
     position: absolute;
     top: 130px;
@@ -129,7 +131,7 @@ header::before {
     display: block;
 }
 
-
+/* список заказов в меню */
 .orders-list-dropdown {
     display: flex;
     flex-direction: column;
@@ -250,7 +252,7 @@ header::before {
     color: #000000;
 }
 
-
+/* калькулятор */
 .calculator {
     display: flex;
     flex-direction: column;
@@ -261,42 +263,64 @@ header::before {
 
 .calculator_body {
     background-color: #d9d9d9;
-    width: 340px;
+    width: 380px;
     padding: 20px;
     border-radius: 10px;
     box-sizing: border-box;
     transition: background-color 0.3s ease;
 }
 
+/* стили рядов кнопок */
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.button-row:last-child {
+    margin-bottom: 0;
+}
+
+/* стили для кнопок */
 .my-btn {
-    margin-right: 8px;
-    margin-top: 8px;
-    width: 65px;
-    height: 65px;
+    width: 60px;
+    height: 60px;
     border-radius: 10px;
     border: none;
     background: #ffffff;
     color: #000000;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-family: Arial, Helvetica, sans-serif;
     cursor: pointer;
     user-select: none;
-    line-height: 65px;
     text-align: center;
-    display: inline-block;
-    box-sizing: border-box;
     transition: all 0.2s ease;
+    margin: 0;
 }
 
 .my-btn:hover {
     background: #f0d246;
     color: #000000;
+    transform: translateY(-2px);
 }
 
 .my-btn:active {
-    filter: brightness(130%);
+    transform: translateY(0px);
+    filter: brightness(95%);
 }
 
+/* стили для цифр */
+.my-btn.digit-btn {
+    background: #ffffff;
+    color: #000000;
+}
+
+.my-btn.digit-btn:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
+/* стили для кнопок операций  */
 .my-btn.primary {
     background: #a9a9a9;
     color: #ffffff;
@@ -307,6 +331,18 @@ header::before {
     color: #000000;
 }
 
+/* стили для темно-серых кнопок операций (del, √, x², x!, =) */
+.my-btn.primary-dark {
+    background: #a9a9a9;
+    color: #ffffff;
+}
+
+.my-btn.primary-dark:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
+/* стили для светло-серых кнопок операций (C, +/-, %) */
 .my-btn.secondary {
     background: #c0c0c0;
     color: #000000;
@@ -317,38 +353,63 @@ header::before {
     color: #000000;
 }
 
-.my-btn.execute {
-    width: 138px;
-    height: 65px;
-    border-radius: 10px;
+/* Стили для вытянутой кнопки = */
+.my-btn.stretched-btn {
+    width: 132px;
+    background: #a9a9a9;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.3rem;
 }
 
+.my-btn.stretched-btn:hover {
+    background: #f0d246;
+    color: #000000;
+    transform: translateY(-2px);
+}
+
+/* Стили для индивидуальной кнопки - белая с желтой рамкой */
+.my-btn.custom-btn {
+    background: #ffffff;
+    border: 2px solid #f0d246;
+    color: #000000;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.my-btn.custom-btn:hover {
+    background: #f0d246;
+    color: #000000;
+    transform: translateY(-2px);
+}
+
+.my-btn.full-width-btn {
+    width: 100%;
+}
+
+/* стиль дисплея */
 .result {
     width: 100%;
-    height: 60px;
+    height: 70px;
     margin-bottom: 15px;
-    padding-right: 15px;
+    padding: 0 15px;
     background: #a9a9a9;
     text-align: right;
-    color: #ffffff;
+    color: #000000;
     font-size: 2rem;
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 60px;
-    overflow: hidden;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    line-height: 70px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
     box-sizing: border-box;
     border-radius: 8px;
     transition: all 0.3s ease;
 }
 
-.my-btn:last-child {
-    margin-right: 0;
-}
-
-.calculator_body > div:last-child > div {
-    white-space: nowrap;
-}
-
-
+/* информация об авторе */
 .author-information {
     margin-top: 15px;
     margin-bottom: 5px;
@@ -367,7 +428,7 @@ header::before {
     font-weight: 600;
     font-size: 1rem;
     background: #ffffff;
-    padding: 10px 28px;
+    padding: 8px 24px;
     border-radius: 0px;
     border: 2px solid #f0d246;
     color: #000000;
@@ -400,8 +461,8 @@ header::before {
 }
 
 .author-details p {
-    margin: 10px 0 5px 0;
-    padding: 8px 15px;
+    margin: 8px 0 5px 0;
+    padding: 6px 12px;
     font-size: 0.9rem;
     color: #555;
     background: #ffffff;
@@ -409,16 +470,16 @@ header::before {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-
+/* кнопка GitHub */
 .github-button-container {
     text-align: center;
-    margin-top: 8px;
+    margin-top: 5px;
     margin-bottom: 40px;
 }
 
 .github-btn {
     display: inline-block;
-    padding: 10px 28px;
+    padding: 8px 24px;
     background-color: #350952;
     color: #ffffff;
     border-radius: 0px;
@@ -439,7 +500,7 @@ header::before {
     box-shadow: 0 4px 12px rgba(240, 210, 70, 0.3);
 }
 
-
+/* темная тема */
 body.dark-theme {
     background-color: #1a1a1a;
 }
@@ -449,23 +510,51 @@ body.dark-theme .calculator_body {
 }
 
 body.dark-theme .result {
-    background-color: #3a3a3a;
-    color: #ffffff;
+    background-color: #a9a9a9;
+    color: #000000;
 }
 
 body.dark-theme .my-btn {
     background-color: #3a3a3a;
     color: #ffffff;
+    border: 1px solid #555;
 }
 
 body.dark-theme .my-btn:hover {
     background: #f0d246;
     color: #000000;
+    border-color: #f0d246;
+}
+
+body.dark-theme .my-btn.digit-btn {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+}
+
+body.dark-theme .my-btn.digit-btn:hover {
+    background: #f0d246;
+    color: #000000;
 }
 
 body.dark-theme .my-btn.primary {
-    background-color: #4a4a4a;
+    background-color: #a9a9a9;
     color: #ffffff;
+}
+
+body.dark-theme .my-btn.primary:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
+body.dark-theme .my-btn.primary-dark {
+    background-color: #a9a9a9;
+    color: #ffffff;
+}
+
+body.dark-theme .my-btn.primary-dark:hover {
+    background: #f0d246;
+    color: #000000;
 }
 
 body.dark-theme .my-btn.secondary {
@@ -473,28 +562,32 @@ body.dark-theme .my-btn.secondary {
     color: #ffffff;
 }
 
-body.dark-theme .author-details summary {
-    background: #3a3a3a;
-    border: 2px solid #f0d246;
+body.dark-theme .my-btn.secondary:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
+body.dark-theme .my-btn.stretched-btn {
+    background: #a9a9a9;
     color: #ffffff;
 }
 
-body.dark-theme .author-details p {
-    background: #3a3a3a;
-    color: #dddddd;
-}
-
-body.dark-theme .github-btn {
-    background-color: #f0d246;
+body.dark-theme .my-btn.stretched-btn:hover {
+    background: #f0d246;
     color: #000000;
 }
 
-body.dark-theme .github-btn:hover {
-    background-color: #ffffff;
+body.dark-theme .my-btn.custom-btn {
+    background: #ffffff;
+    border: 2px solid #f0d246;
     color: #000000;
 }
 
-/*темная тема для кнопки*/
+body.dark-theme .my-btn.custom-btn:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
 body.dark-theme .theme-btn {
     background: #3a3a3a;
     border-color: #f0d246;
@@ -506,7 +599,6 @@ body.dark-theme .theme-btn:hover {
     color: #000000;
 }
 
-/* темная тема для менб заказы */
 body.dark-theme .dropdown-btn {
     background: #3a3a3a;
     border-color: #f0d246;
@@ -533,9 +625,29 @@ body.dark-theme .dropdown-content {
 
 body.dark-theme .order-card-dropdown {
     background: #3a3a3a;
+    border-left-color: #f0d246;
+}
+
+body.dark-theme .order-card-dropdown:hover {
+    background: #4a4a4a;
 }
 
 body.dark-theme .order-id-dropdown {
+    color: #ffffff;
+}
+
+body.dark-theme .order-status-dropdown.status-active-dropdown {
+    background-color: #f0d246;
+    color: #000000;
+}
+
+body.dark-theme .order-status-dropdown.status-completed-dropdown {
+    background-color: #666;
+    color: #ffffff;
+}
+
+body.dark-theme .order-status-dropdown.status-pending-dropdown {
+    background-color: #888;
     color: #ffffff;
 }
 
@@ -560,4 +672,41 @@ body.dark-theme .view-btn-dropdown {
 body.dark-theme .view-btn-dropdown:hover {
     background-color: #f0d246;
     color: #000000;
+}
+
+body.dark-theme .edit-btn-dropdown {
+    background-color: #f0d246;
+    color: #000000;
+}
+
+body.dark-theme .edit-btn-dropdown:hover {
+    background-color: #ffcc33;
+    color: #000000;
+}
+
+body.dark-theme .author-details summary {
+    background: #3a3a3a;
+    border: 2px solid #f0d246;
+    color: #ffffff;
+}
+
+body.dark-theme .author-details summary:hover {
+    background: #f0d246;
+    color: #000000;
+}
+
+body.dark-theme .author-details p {
+    background: #3a3a3a;
+    color: #dddddd;
+}
+
+body.dark-theme .github-btn {
+    background-color: #f0d246;
+    color: #000000;
+}
+
+body.dark-theme .github-btn:hover {
+    background-color: #ffcc33;
+    color: #000000;
+    transform: translateY(-2px);
 }

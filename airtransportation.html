@@ -12,7 +12,7 @@
         <div class="logo">Расчет стоимости авиаперевозок</div>
     </header>
     
-    <!-- кнопка смены темы  -->
+    <!-- кнопка смены темы -->
     <div class="theme-button-container">
         <button id="theme-toggle" class="theme-btn">Сменить тему</button>
     </div>
@@ -24,7 +24,6 @@
             <span class="dropdown-arrow">▼</span>
         </div>
         <div class="dropdown-content">
-            <!-- заказы в виде карточек -->
             <div class="orders-list-dropdown">
                 <!-- карточка 1 -->
                 <div class="order-card-dropdown">
@@ -152,40 +151,55 @@
     <!-- калькулятор -->
     <div class="calculator">
         <div class="calculator_body">
-            <div id="result" class="result">
-                0
+            <div id="result" class="result">0</div>
+            
+            <!-- ряд 1: C, +/-, %, /, del -->
+            <div class="button-row">
+                <button id="btn_op_clear" class="my-btn secondary">C</button>
+                <button id="btn_op_sign" class="my-btn secondary">+/-</button>
+                <button id="btn_op_percent" class="my-btn secondary">%</button>
+                <button id="btn_op_div" class="my-btn primary">/</button>
+                <button id="btn_op_backspace" class="my-btn primary-dark">del</button>
             </div>
-
-            <div>
-                <div>
-                    <button id="btn_op_clear" class="my-btn secondary">C</button>
-                    <button id="btn_op_sign" class="my-btn secondary">+/-</button>
-                    <button id="btn_op_percent" class="my-btn secondary">%</button>
-                    <button id="btn_op_div" class="my-btn primary">/</button>
-                </div>
-                <div>
-                    <button id="btn_digit_7" class="my-btn">7</button>
-                    <button id="btn_digit_8" class="my-btn">8</button>
-                    <button id="btn_digit_9" class="my-btn">9</button>
-                    <button id="btn_op_mult" class="my-btn primary">x</button>
-                </div>
-                <div>
-                    <button id="btn_digit_4" class="my-btn">4</button>
-                    <button id="btn_digit_5" class="my-btn">5</button>
-                    <button id="btn_digit_6" class="my-btn">6</button>
-                    <button id="btn_op_minus" class="my-btn primary">-</button>
-                </div>
-                <div>
-                    <button id="btn_digit_1" class="my-btn">1</button>
-                    <button id="btn_digit_2" class="my-btn">2</button>
-                    <button id="btn_digit_3" class="my-btn">3</button>
-                    <button id="btn_op_plus" class="my-btn primary">+</button>
-                </div>
-                <div>
-                    <button id="btn_digit_0" class="my-btn">0</button>
-                    <button id="btn_digit_dot" class="my-btn">.</button>
-                    <button id="btn_op_equal" class="my-btn primary execute">=</button>
-                </div>
+            
+            <!-- ряд 2: 7, 8, 9, x, √ -->
+            <div class="button-row">
+                <button id="btn_digit_7" class="my-btn digit-btn">7</button>
+                <button id="btn_digit_8" class="my-btn digit-btn">8</button>
+                <button id="btn_digit_9" class="my-btn digit-btn">9</button>
+                <button id="btn_op_mult" class="my-btn primary">x</button>
+                <button id="btn_op_sqrt" class="my-btn primary-dark">√</button>
+            </div>
+            
+            <!-- ряд 3: 4, 5, 6, -, x² -->
+            <div class="button-row">
+                <button id="btn_digit_4" class="my-btn digit-btn">4</button>
+                <button id="btn_digit_5" class="my-btn digit-btn">5</button>
+                <button id="btn_digit_6" class="my-btn digit-btn">6</button>
+                <button id="btn_op_minus" class="my-btn primary">-</button>
+                <button id="btn_op_square" class="my-btn primary-dark">x²</button>
+            </div>
+            
+            <!-- ряд 4: 1, 2, 3, +, x! -->
+            <div class="button-row">
+                <button id="btn_digit_1" class="my-btn digit-btn">1</button>
+                <button id="btn_digit_2" class="my-btn digit-btn">2</button>
+                <button id="btn_digit_3" class="my-btn digit-btn">3</button>
+                <button id="btn_op_plus" class="my-btn primary">+</button>
+                <button id="btn_op_factorial" class="my-btn primary-dark">x!</button>
+            </div>
+            
+            <!-- ряд 5: 0, ., 000, = -->
+            <div class="button-row">
+                <button id="btn_digit_0" class="my-btn digit-btn">0</button>
+                <button id="btn_digit_dot" class="my-btn digit-btn">.</button>
+                <button id="btn_op_three_zeros" class="my-btn digit-btn">000</button>
+                <button id="btn_op_equal" class="my-btn primary-dark stretched-btn">=</button>
+            </div>
+            
+            <!-- ряд 6: вытянутая кнопка для индивидуальной функции -->
+            <div class="button-row">
+                <button id="btn_op_normal_distribution" class="my-btn custom-btn full-width-btn">Распределение груза</button>
             </div>
         </div>
     </div>
@@ -194,18 +208,18 @@
     <div class="author-information">
         <details class="author-details">
             <summary>Автор</summary>
-            <p>ФИО: Блинкова Ксения</p>
+            <p>ФИО: Горячева Софья Александровна</p>
             <p>Группа: ИУ5-41Б</p>
-            <p>Лабораторная работа №1</p>
+            <p>Индивидуальное задание: Нормальное распределение веса груза</p>
         </details>
     </div>
 
     <!-- кнопка GitHub -->
     <div class="github-button-container">
-        <a href="https://github.com/KseniaBlinkova/Blinkova-PNA-Labs-2026.git" target="_blank" class="github-btn">МОЙ GitHub</a>
+        <a href="https://github.com/sonechka-goryacheva/Goryacheva-PNA-Labs-2026" target="_blank" class="github-btn">МОЙ GitHub</a>
     </div>
 
-    <script src="airtransportation.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
