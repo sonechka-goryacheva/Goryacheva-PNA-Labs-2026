@@ -10,10 +10,10 @@ export class CalculatorComponent {
             </div>
             <div class="row">
                 <div class="col-md-3 mb-3">
-                    <input type="text" class="form-control-custom" id="from-city" placeholder="Город отправления">
+                    <input type="text" class="form-control-custom" id="from-city" placeholder="Город отправления" autocomplete="off">
                 </div>
                 <div class="col-md-3 mb-3">
-                    <input type="text" class="form-control-custom" id="to-city" placeholder="Город назначения">
+                    <input type="text" class="form-control-custom" id="to-city" placeholder="Город назначения" autocomplete="off">
                 </div>
                 <div class="col-md-2 mb-3">
                     <input type="number" class="form-control-custom" id="weight" placeholder="Вес (кг)" min="0" step="1">

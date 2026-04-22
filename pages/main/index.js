@@ -16,93 +16,135 @@ export class MainPage {
         return [
             {
                 id: 1,
-                title: "Авиадоставка грузов",
-                shortDesc: "Оперативная доставка грузов воздушным транспортом по России и миру",
-                fullDesc: "Авиационные перевозки с нами – это оптимальная стоимость доставки и бережное отношение к грузу. Мы сотрудничаем с ведущими авиакомпаниями и гарантируем сохранность вашего груза.",
-                image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800",
-                price: "150",
+                title: "Тарифная зона 1 (Европа)",
+                shortDesc: "Страны ЕС, Великобритания, Швейцария, Норвегия",
+                fullDesc: "Ежедневные рейсы из всех основных аэропортов. Быстрая доставка до двери.",
+                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
+                image: "",
+                price: "120",
                 unit: "кг",
                 maxWeight: "до 5000 кг",
-                deliveryTime: "1-3 дня",
-                zone: "Россия, СНГ, Европа, Азия",
-                insurance: "Включено в стоимость",
-                features: "Отслеживание груза 24/7",
-                category: "Авиа"
+                deliveryTime: "2-3 дня",
+                zone: "Европа",
+                insurance: "Включено",
+                features: "Ежедневные рейсы",
+                category: "Тарифная зона",
+                countries: ["Германия", "Франция", "Италия", "Испания", "Великобритания", "Швейцария", "Норвегия", "Польша", "Чехия", "Австрия", "Бельгия", "Нидерланды"],
+                aircrafts: [
+                    { name: "Boeing 737-800F", capacity: "до 23 тонн", range: "3,600 км" },
+                    { name: "Airbus A321F", capacity: "до 27 тонн", range: "3,700 км" },
+                    { name: "Boeing 767-300F", capacity: "до 60 тонн", range: "6,000 км" }
+                ]
             },
             {
                 id: 2,
-                title: "Экспресс-доставка корреспонденции",
-                shortDesc: "Доставка писем и документов за 2 часа до вылета рейса",
-                fullDesc: "Уникальная технология позволяет отправить письмо или небольшую посылку за 2 часа до вылета рейса и получить в аэропорту назначения через 2 часа после посадки воздушного судна.",
-                image: "https://images.unsplash.com/photo-1589571894960-20bbe2828d0a?w=800",
-                price: "500",
-                unit: "отправление",
-                maxWeight: "до 5 кг",
-                deliveryTime: "от 4 часов",
-                zone: "Москва - регионы России",
-                insurance: "По запросу",
-                features: "Срочная доставка",
-                category: "Экспресс"
+                title: "Тарифная зона 2 (Азия)",
+                shortDesc: "Китай, Япония, Южная Корея, Сингапур",
+                fullDesc: "Регулярные рейсы с фиксированным расписанием. Экспресс-доставка крупных партий.",
+                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
+                image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
+                price: "180",
+                unit: "кг",
+                maxWeight: "до 10000 кг",
+                deliveryTime: "3-5 дней",
+                zone: "Азия",
+                insurance: "Включено",
+                features: "Экспресс-доставка",
+                category: "Тарифная зона",
+                countries: ["Китай", "Япония", "Южная Корея", "Сингапур", "Таиланд", "Вьетнам", "Малайзия", "Индия"],
+                aircrafts: [
+                    { name: "Boeing 777F", capacity: "до 102 тонн", range: "9,070 км" },
+                    { name: "Boeing 747-400F", capacity: "до 112 тонн", range: "8,230 км" },
+                    { name: "Airbus A330-200F", capacity: "до 70 тонн", range: "7,400 км" }
+                ]
             },
             {
                 id: 3,
-                title: "Таможенное оформление грузов",
-                shortDesc: "Полное сопровождение таможенных процедур",
-                fullDesc: "Профессиональное таможенное оформление импортных и экспортных грузов. Помощь в подготовке документов, расчет пошлин и сборов, консультации экспертов.",
-                image: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=800",
-                price: "5000",
-                unit: "декларация",
-                maxWeight: "без ограничений",
-                deliveryTime: "1-2 дня",
-                zone: "Россия",
-                insurance: "Не требуется",
-                features: "Консультация эксперта",
-                category: "Документы"
+                title: "Тарифная зона 3 (Америка)",
+                shortDesc: "США, Канада, Бразилия, Мексика",
+                fullDesc: "Трансатлантические и транстихоокеанские маршруты. Полное таможенное сопровождение.",
+                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
+                image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
+                price: "250",
+                unit: "кг",
+                maxWeight: "до 20000 кг",
+                deliveryTime: "4-7 дней",
+                zone: "Америка",
+                insurance: "Включено",
+                features: "Таможенное сопровождение",
+                category: "Тарифная зона",
+                countries: ["США", "Канада", "Бразилия", "Мексика", "Аргентина", "Чили", "Перу", "Колумбия"],
+                aircrafts: [
+                    { name: "Boeing 777F", capacity: "до 102 тонн", range: "9,070 км" },
+                    { name: "Boeing 747-400F", capacity: "до 112 тонн", range: "8,230 км" },
+                    { name: "Airbus A330-200F", capacity: "до 70 тонн", range: "7,400 км" }
+                ]
             },
             {
                 id: 4,
-                title: "Перевозка животных",
-                shortDesc: "Безопасная перевозка домашних питомцев",
-                fullDesc: "Перевозка животных самолетом по России и миру. Индивидуальные контейнеры, ветеринарный контроль, комфортные условия для ваших питомцев.",
-                image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800",
-                price: "3000",
-                unit: "животное",
-                maxWeight: "до 50 кг",
-                deliveryTime: "1-5 дней",
-                zone: "Россия, СНГ, Европа",
-                insurance: "Обязательное",
-                features: "Ветеринарный контроль",
-                category: "Спецгруз"
+                title: "Тарифная зона 4 (Ближний Восток)",
+                shortDesc: "ОАЭ, Катар, Саудовская Аравия, Израиль",
+                fullDesc: "Регулярные рейсы в основные хабы. Быстрая обработка грузов.",
+                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
+                image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
+                price: "200",
+                unit: "кг",
+                maxWeight: "до 8000 кг",
+                deliveryTime: "3-4 дня",
+                zone: "Ближний Восток",
+                insurance: "Включено",
+                features: "Регулярные рейсы",
+                category: "Тарифная зона",
+                countries: ["ОАЭ", "Катар", "Саудовская Аравия", "Израиль", "Кувейт", "Оман", "Бахрейн"],
+                aircrafts: [
+                    { name: "Boeing 777F", capacity: "до 102 тонн", range: "9,070 км" },
+                    { name: "Boeing 747-400F", capacity: "до 112 тонн", range: "8,230 км" },
+                    { name: "Airbus A330-200F", capacity: "до 70 тонн", range: "7,400 км" }
+                ]
             },
             {
                 id: 5,
-                title: "Скоропортящиеся продукты",
-                shortDesc: "Авиадоставка продуктов для ресторанов и кафе",
-                fullDesc: "Авиадоставка скоропортящихся продуктов с контролем температуры. Свежие продукты от производителя к вашему столу.",
-                image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800",
-                price: "250",
+                title: "Тарифная зона 5 (СНГ и Средняя Азия)",
+                shortDesc: "Казахстан, Узбекистан, Азербайджан, Армения",
+                fullDesc: "Быстрая доставка по странам СНГ. Индивидуальный подход.",
+                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
+                image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
+                price: "100",
                 unit: "кг",
-                maxWeight: "до 1000 кг",
+                maxWeight: "до 3000 кг",
                 deliveryTime: "1-2 дня",
-                zone: "Россия",
+                zone: "СНГ",
                 insurance: "Включено",
-                features: "Температурный контроль",
-                category: "Термо"
+                features: "Регулярные рейсы",
+                category: "Тарифная зона",
+                countries: ["Казахстан", "Узбекистан", "Азербайджан", "Армения", "Киргизия", "Таджикистан", "Туркменистан", "Грузия"],
+                aircrafts: [
+                    { name: "Ил-76ТД", capacity: "до 48 тонн", range: "6,700 км" },
+                    { name: "Boeing 737-800F", capacity: "до 23 тонн", range: "3,600 км" },
+                    { name: "Airbus A321F", capacity: "до 27 тонн", range: "3,700 км" }
+                ]
             },
             {
                 id: 6,
-                title: "Автомобильные перевозки",
-                shortDesc: "Доставка грузов по Москве и области",
-                fullDesc: "Доставка грузов любого веса и объёма по Москве и области собственным автотранспортом. Доставка из аэропорта до адреса получателя.",
-                image: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=800",
-                price: "1000",
-                unit: "рейс",
-                maxWeight: "до 1500 кг",
-                deliveryTime: "1 день",
-                zone: "Москва, МО",
-                insurance: "По запросу",
-                features: "Автопарк, экспедирование",
-                category: "Авто"
+                title: "Тарифная зона 6 (Африка)",
+                shortDesc: "ЮАР, Египет, Кения, Нигерия",
+                fullDesc: "Специализированные рейсы в Африку. Работа с местными авиакомпаниями.",
+                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
+                image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
+                price: "300",
+                unit: "кг",
+                maxWeight: "до 15000 кг",
+                deliveryTime: "5-8 дней",
+                zone: "Африка",
+                insurance: "Включено",
+                features: "Чартерные рейсы",
+                category: "Тарифная зона",
+                countries: ["ЮАР", "Египет", "Кения", "Нигерия", "Марокко", "Тунис", "Алжир", "Гана"],
+                aircrafts: [
+                    { name: "Antonov An-124-100", capacity: "до 150 тонн", range: "5,400 км" },
+                    { name: "Boeing 747-400F", capacity: "до 112 тонн", range: "8,230 км" },
+                    { name: "Ил-76ТД", capacity: "до 48 тонн", range: "6,700 км" }
+                ]
             }
         ];
     }
@@ -169,12 +211,12 @@ export class MainPage {
                 <div class="control-panel">
                     <div class="control-group">
                         <div class="search-box">
-                            <input type="text" id="search-input" placeholder="Поиск по названию, описанию или категории..." class="search-input">
+                            <input type="text" id="search-input" placeholder="Поиск по тарифной зоне или типу ВС..." class="search-input">
                             <button id="search-btn" class="search-btn">🔍 Найти</button>
                         </div>
                         <div class="action-buttons">
                             <button id="add-card-btn" class="action-btn-add">
-                                <span>+</span> Добавить услугу (копировать первую)
+                                <span>+</span> Добавить тарифную зону
                             </button>
                         </div>
                     </div>
@@ -183,18 +225,8 @@ export class MainPage {
                 <div class="services-section">
                     <div class="section-header">
                         <div class="section-title-wrapper">
-                            <div class="section-icon">
-                                <svg viewBox="0 0 24 24" stroke="#34084b" stroke-width="1.5" fill="none">
-                                    <path d="M12 2L12 7M12 2L9 5M12 2L15 5"/>
-                                    <path d="M5 12L19 12"/>
-                                    <path d="M3 17L21 17"/>
-                                    <path d="M8 7L16 7"/>
-                                    <path d="M6 12L4 17"/>
-                                    <path d="M18 12L20 17"/>
-                                </svg>
-                            </div>
                             <div>
-                                <div class="section-title">Наши услуги</div>
+                                <div class="section-title">Тарифные зоны</div>
                                 <div class="section-subtitle" id="services-count">Всего: ${this.filteredServices.length}</div>
                             </div>
                         </div>
@@ -223,7 +255,7 @@ export class MainPage {
     }
     
     clickCard(serviceId) {
-        const servicePage = new ServicePage(this.parent, serviceId, this.toast);
+        const servicePage = new ServicePage(this.parent, serviceId, this.toast, this.services);
         servicePage.render();
     }
     

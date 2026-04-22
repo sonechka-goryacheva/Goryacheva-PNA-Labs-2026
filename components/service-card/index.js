@@ -27,37 +27,7 @@ export class ServiceCardComponent {
                             <path d="M8 15H12"/>
                          </svg>`,
 
-            // Милый котик с ушками для перевозки животных
-            'Спецгруз': `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
-                        <!-- Левый глаз -->
-                        <circle cx="8" cy="10" r="1.2" fill="currentColor"/>
-                        <!-- Правый глаз -->
-                        <circle cx="16" cy="10" r="1.2" fill="currentColor"/>
-                        <!-- Носик -->
-                        <circle cx="12" cy="14" r="1" fill="currentColor"/>
-                        <!-- Усы -->
-                        <path d="M6 13L4 12M6 14L4 15M18 13L20 12M18 14L20 15"/>
-                        <!-- Ротик -->
-                        <path d="M10 16C10 16 11 17 12 17C13 17 14 16 14 16"/>
-                        <!-- Левое ухо -->
-                        <path d="M5 6L7 3L9 6" fill="currentColor"/>
-                        <!-- Правое ухо -->
-                        <path d="M19 6L17 3L15 6" fill="currentColor"/>
-                        <!-- Голова -->
-                        <path d="M4 10C4 6 7 4 12 4C17 4 20 6 20 10C20 14 17 18 12 18C7 18 4 14 4 10Z"/>
-                        </svg>`,
-            // Снежинка для скоропортящихся продуктов
-            'Термо': `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
-                        <path d="M12 4V20M12 4L9 7M12 4L15 7M12 20L9 17M12 20L15 17"/>
-                        <path d="M5 12L19 12M5 12L8 9M5 12L8 15M19 12L16 9M19 12L16 15"/>
-                        <path d="M7 7L17 17M7 17L17 7"/>
-                      </svg>`,
-            // Грузовик для авто
-            'Авто': `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
-                        <path d="M4 12L20 12L18 6H6L4 12Z"/>
-                        <circle cx="7" cy="16" r="2"/>
-                        <circle cx="17" cy="16" r="2"/>
-                     </svg>`
+
         };
         return icons[category] || icons['Авиа'];
     }
@@ -84,9 +54,6 @@ export class ServiceCardComponent {
                         <div class="card-icon">
                             ${this.getIcon(data.category)}
                         </div>
-                        <button class="delete-card-btn" data-id="${data.id}" title="Удалить карточку">
-                            🗑️
-                        </button>
                     </div>
                     <div class="card-category">${data.category}</div>
                     <h3 class="card-title">${data.title}</h3>
@@ -105,9 +72,13 @@ export class ServiceCardComponent {
                         от ${data.price} ₽
                         <small>/${data.unit}</small>
                     </div>
-                    <button class="card-btn" data-id="${data.id}">
+                <div style="display: flex; gap: 10px; margin-top: auto;">
+                    <button class="card-btn" data-id="${data.id}" style=flex: 1;">
                         Подробнее
                         <span class="btn-arrow">→</span>
+                    </button>
+                    <button class="card-btn-delete" data-id="${data.id}" style="flex: 1;">
+                        Удалить
                     </button>
                 </div>
             </div>
@@ -123,7 +94,7 @@ export class ServiceCardComponent {
             });
         }
         
-        const deleteBtn = document.querySelector(`.delete-card-btn[data-id="${data.id}"]`);
+        const deleteBtn = document.querySelector(`.card-btn-delete[data-id="${data.id}"]`);
         if (deleteBtn) {
             deleteBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
@@ -135,7 +106,7 @@ export class ServiceCardComponent {
         if (card) {
             card.addEventListener("click", (e) => {
                 if (!e.target.classList.contains('card-btn') && 
-                    !e.target.classList.contains('delete-card-btn')) {
+                    !e.target.classList.contains('card-btn-delete')) {
                     clickListener(data.id);
                 }
             });
