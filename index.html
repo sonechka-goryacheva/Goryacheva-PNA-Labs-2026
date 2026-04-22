@@ -44,9 +44,16 @@
             font-weight: 700;
             color: var(--purple);
         }
+        
         .header .container {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 15px;
             align-items: center;
         }
 
@@ -66,22 +73,167 @@
             transform: translateY(-2px);
         }
 
+        /* ========== МЕНЮ "ЗАКАЗЫ" (ВЫПАДАЮЩЕЕ, СПРАВА) ========== */
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            background: #ffffff;
+            border: 2px solid #f0d246;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-text {
+            font-size: 0.9rem;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .dropdown-arrow {
+            font-size: 0.7rem;
+            color: #000000;
+        }
+
+        .dropdown-btn:hover {
+            background: #f0d246;
+        }
+
+        .dropdown-btn:hover .dropdown-text,
+        .dropdown-btn:hover .dropdown-arrow {
+            color: #000000;
+        }
+
+        /* ВЫПАДАЮЩИЙ КОНТЕНТ */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background-color: #ffffff;
+            min-width: 460px;
+            max-width: 460px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            padding: 20px;
+            border: 1px solid #f0d246;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* ========== СПИСОК ЗАКАЗОВ В ВЫПАДАЮЩЕМ МЕНЮ - 1 СТОЛБЕЦ ========== */
+
+        .orders-list-dropdown {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* КАРТОЧКА ЗАКАЗА */
+        .order-card-dropdown {
+            background: #f9f9f9;
+            border-left: 5px solid #f0d246;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .order-card-dropdown:hover {
+            background: #fff;
+            transform: translateX(5px);
+        }
+
+        .order-card-header-dropdown {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-id-dropdown {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .order-status-dropdown {
+            padding: 3px 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-active-dropdown {
+            background-color: #f0d246;
+            color: #000000;
+        }
+
+        .status-completed-dropdown {
+            background-color: #c0c0c0;
+            color: #333;
+        }
+
+        .status-pending-dropdown {
+            background-color: #a9a9a9;
+            color: #ffffff;
+        }
+
+        .order-card-details-dropdown {
+            margin-bottom: 10px;
+        }
+
+        .order-detail-row-dropdown {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 0.85rem;
+        }
+
+        .detail-label-dropdown {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .detail-value-dropdown {
+            color: #333;
+        }
+
+        .price-dropdown {
+            font-weight: bold;
+            color: #350952;
+        }
+
         @media (max-width: 768px) {
             .header .container {
                 flex-direction: column;
                 gap: 15px;
+            }
+            .dropdown-content {
+                min-width: 320px;
+                right: -20px;
             }
         }
         
         /* калькулятор фон */
         .calculator-wrapper {
             width: 100%;
-    background-image: url('plane-header.jpg'); 
-    background-size: cover;
-    background-position: center;
-    border-bottom: 1px solid var(--gray-border);
-    border-top: 1px solid var(--gray-border);
-
+            background-image: url('plane-header.jpg'); 
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid var(--gray-border);
+            border-top: 1px solid var(--gray-border);
         }
         
         .calculator-card {
@@ -127,6 +279,7 @@
             font-weight: 700;
             color: var(--gold);
         }
+        
         /* Стили для стран и самолетов на детальной странице */
         .country-item {
             display: inline-flex;
@@ -164,6 +317,7 @@
             color: var(--gray);
             margin-top: 3px;
         }
+        
         /* кнопки */
         .btn-calculate {
             background: var(--white);
@@ -176,6 +330,7 @@
             color: var(--gray-dark);
             cursor: pointer;
         }
+        
         .card-btn-delete {
             background: transparent;
             border: 2px solid var(--gold);
@@ -625,6 +780,7 @@
             .detail-card { padding: 20px; }
             .section-title { font-size: 24px; }
         }
+        
         /* Убираем иконки автозаполнения в WebKit браузерах (Chrome, Safari) */
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
@@ -634,7 +790,7 @@
             box-shadow: 0 0 0 30px white inset !important;
         }
 
-/* Убираем иконку человечка в Chrome */
+        /* Убираем иконку человечка в Chrome */
         input::-webkit-contacts-auto-fill-button,
         input::-webkit-credentials-auto-fill-button {
             visibility: hidden;
@@ -649,7 +805,124 @@
     <header class="header">
         <div class="container">
             <div class="logo">Авиаперевозки грузов</div>
-            <button id="home-button" class="home-button">Домой</button>
+            <div class="header-right">
+                <button id="home-button" class="home-button">Домой</button>
+                
+                <!-- МЕНЮ "ЗАКАЗЫ" (ВЫПАДАЮЩЕЕ, СПРАВА) -->
+                <div class="dropdown">
+                    <div class="dropdown-btn">
+                        <span class="dropdown-text">Заказы</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="dropdown-content">
+                        <div class="orders-list-dropdown">
+                            <!-- Карточка 1 -->
+                            <div class="order-card-dropdown">
+                                <div class="order-card-header-dropdown">
+                                    <span class="order-id-dropdown">Заказ #AV-101</span>
+                                    <span class="order-status-dropdown status-active-dropdown">Активен</span>
+                                </div>
+                                <div class="order-card-details-dropdown">
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Маршрут:</span>
+                                        <span class="detail-value-dropdown">Москва (SVO) → Симферополь (SIP)</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Груз:</span>
+                                        <span class="detail-value-dropdown">Документы, 5 кг</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Дата:</span>
+                                        <span class="detail-value-dropdown">15.03.2026</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Стоимость:</span>
+                                        <span class="detail-value-dropdown price-dropdown">12 500 ₽</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Карточка 2 -->
+                            <div class="order-card-dropdown">
+                                <div class="order-card-header-dropdown">
+                                    <span class="order-id-dropdown">Заказ #AV-102</span>
+                                    <span class="order-status-dropdown status-completed-dropdown">Завершен</span>
+                                </div>
+                                <div class="order-card-details-dropdown">
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Маршрут:</span>
+                                        <span class="detail-value-dropdown">Санкт-Петербург (LED) → Сочи (AER)</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Груз:</span>
+                                        <span class="detail-value-dropdown">Оборудование, 45 кг</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Дата:</span>
+                                        <span class="detail-value-dropdown">10.03.2026</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Стоимость:</span>
+                                        <span class="detail-value-dropdown price-dropdown">34 800 ₽</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Карточка 3 -->
+                            <div class="order-card-dropdown">
+                                <div class="order-card-header-dropdown">
+                                    <span class="order-id-dropdown">Заказ #AV-103</span>
+                                    <span class="order-status-dropdown status-pending-dropdown">Ожидает</span>
+                                </div>
+                                <div class="order-card-details-dropdown">
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Маршрут:</span>
+                                        <span class="detail-value-dropdown">Екатеринбург (SVX) → Новосибирск (OVB)</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Груз:</span>
+                                        <span class="detail-value-dropdown">Продукты питания, 120 кг</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Дата:</span>
+                                        <span class="detail-value-dropdown">18.03.2026</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Стоимость:</span>
+                                        <span class="detail-value-dropdown price-dropdown">67 200 ₽</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Карточка 4 -->
+                            <div class="order-card-dropdown">
+                                <div class="order-card-header-dropdown">
+                                    <span class="order-id-dropdown">Заказ #AV-104</span>
+                                    <span class="order-status-dropdown status-active-dropdown">Активен</span>
+                                </div>
+                                <div class="order-card-details-dropdown">
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Маршрут:</span>
+                                        <span class="detail-value-dropdown">Казань (KZN) → Дубай (DXB)</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Груз:</span>
+                                        <span class="detail-value-dropdown">Электроника, 250 кг</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Дата:</span>
+                                        <span class="detail-value-dropdown">22.03.2026</span>
+                                    </div>
+                                    <div class="order-detail-row-dropdown">
+                                        <span class="detail-label-dropdown">Стоимость:</span>
+                                        <span class="detail-value-dropdown price-dropdown">245 000 ₽</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
     
