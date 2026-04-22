@@ -1,3 +1,5 @@
+import { mergeTariffData } from "../../utils/helpers.js";
+
 export class CalculatorComponent {
     constructor(parent) {
         this.parent = parent;
@@ -28,6 +30,7 @@ export class CalculatorComponent {
             <div id="result-box" class="result-box" style="display: none;">
                 <div class="result-price" id="result-price">0 ₽</div>
                 <div style="font-size: 12px; color: var(--gray);">*ориентировочная стоимость</div>
+                <div id="merge-result" style="font-size: 11px; color: var(--purple); margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--gray-border); display: none;"></div>
             </div>
         `;
     }
@@ -55,6 +58,7 @@ export class CalculatorComponent {
         const volumeInput = document.getElementById('volume');
         const resultBox = document.getElementById('result-box');
         const resultPrice = document.getElementById('result-price');
+        const mergeResultDiv = document.getElementById('merge-result');
         
         if (calculateBtn) {
             calculateBtn.addEventListener('click', () => {
@@ -74,6 +78,29 @@ export class CalculatorComponent {
                 const price = this.calculatePrice(weight, volume, from, to);
                 resultPrice.textContent = price.toLocaleString() + ' ₽';
                 resultBox.style.display = 'block';
+                
+                const routeData = {
+                    from: from || "Не указан",
+                    to: to || "Не указан"
+                };
+                const cargoData = {
+                    weight: weight + " кг",
+                    volume: volume + " м³"
+                };
+                const priceData = {
+                    стоимость: price.toLocaleString() + " ₽",
+                    рассчитано: new Date().toLocaleString()
+                };
+                
+                const mergedRoute = mergeTariffData(routeData, cargoData, priceData);
+                
+                mergeResultDiv.style.display = 'block';
+                mergeResultDiv.innerHTML = `
+                    <strong>Информация о перевозке</strong><br>
+                    Маршрут: ${mergedRoute.from} → ${mergedRoute.to}<br>
+                    Груз: ${mergedRoute.weight} / ${mergedRoute.volume}<br>
+                    Стоимость: ${mergedRoute.стоимость} (${mergedRoute.рассчитано})
+                `;
                 
                 toastCallback(`Стоимость перевозки: ${price.toLocaleString()} ₽`, 'Расчет выполнен');
             });

@@ -2,6 +2,7 @@ import { ServiceCardComponent } from "../../components/service-card/index.js";
 import { CalculatorComponent } from "../../components/calculator/index.js";
 import { ServicePage } from "../service/index.js";
 import { ToastComponent } from "../../components/toast/index.js";
+import { isEqualTariffZone, getExcludedZones, mergeTariffData, createTemplateZones } from "../../utils/helpers.js";
 
 export class MainPage {
     constructor(parent) {
@@ -19,8 +20,7 @@ export class MainPage {
                 title: "Тарифная зона 1 (Европа)",
                 shortDesc: "Страны ЕС, Великобритания, Швейцария, Норвегия",
                 fullDesc: "Ежедневные рейсы из всех основных аэропортов. Быстрая доставка до двери.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
-                image: "",
+                image: "Europe.png",
                 price: "120",
                 unit: "кг",
                 maxWeight: "до 5000 кг",
@@ -41,8 +41,7 @@ export class MainPage {
                 title: "Тарифная зона 2 (Азия)",
                 shortDesc: "Китай, Япония, Южная Корея, Сингапур",
                 fullDesc: "Регулярные рейсы с фиксированным расписанием. Экспресс-доставка крупных партий.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
-                image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
+                image: "Azia.png",
                 price: "180",
                 unit: "кг",
                 maxWeight: "до 10000 кг",
@@ -63,8 +62,7 @@ export class MainPage {
                 title: "Тарифная зона 3 (Америка)",
                 shortDesc: "США, Канада, Бразилия, Мексика",
                 fullDesc: "Трансатлантические и транстихоокеанские маршруты. Полное таможенное сопровождение.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
-                image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
+                image: "America.avif",
                 price: "250",
                 unit: "кг",
                 maxWeight: "до 20000 кг",
@@ -85,8 +83,7 @@ export class MainPage {
                 title: "Тарифная зона 4 (Ближний Восток)",
                 shortDesc: "ОАЭ, Катар, Саудовская Аравия, Израиль",
                 fullDesc: "Регулярные рейсы в основные хабы. Быстрая обработка грузов.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
-                image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
+                image: "Bligni Vostok.webp",
                 price: "200",
                 unit: "кг",
                 maxWeight: "до 8000 кг",
@@ -107,8 +104,7 @@ export class MainPage {
                 title: "Тарифная зона 5 (СНГ и Средняя Азия)",
                 shortDesc: "Казахстан, Узбекистан, Азербайджан, Армения",
                 fullDesc: "Быстрая доставка по странам СНГ. Индивидуальный подход.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
-                image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
+                image: "CNG&Azia.avif",
                 price: "100",
                 unit: "кг",
                 maxWeight: "до 3000 кг",
@@ -129,8 +125,7 @@ export class MainPage {
                 title: "Тарифная зона 6 (Африка)",
                 shortDesc: "ЮАР, Египет, Кения, Нигерия",
                 fullDesc: "Специализированные рейсы в Африку. Работа с местными авиакомпаниями.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
-                image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
+                image: "Africa.jpg",
                 price: "300",
                 unit: "кг",
                 maxWeight: "до 15000 кг",
@@ -153,17 +148,30 @@ export class MainPage {
         const firstCard = this.services[0];
         if (!firstCard) return;
         
-        const newCard = {
-            ...firstCard,
-            id: this.nextId++,
-            title: `${firstCard.title} (копия)`,
-            shortDesc: `${firstCard.shortDesc} (добавлено)`
+        const isDuplicate = this.services.some(zone => 
+            isEqualTariffZone(zone, firstCard)
+        );
+        
+        if (isDuplicate) {
+            this.toast.show("Такая тарифная зона уже существует! Копирование отменено.", "Ошибка");
+            return;
+        }
+        
+        const metaData = {
+            copiedAt: new Date().toLocaleString(),
+            source: "копия"
         };
+        
+        const newCard = mergeTariffData(
+            { ...firstCard, id: this.nextId++ },
+            { title: `${firstCard.title} (копия)`, shortDesc: `${firstCard.shortDesc} (добавлено)` },
+            metaData
+        );
         
         this.services.push(newCard);
         this.filteredServices = [...this.services];
         this.renderServices();
-        this.toast.show(`Услуга "${newCard.title}" добавлена`, "Карточка создана");
+        this.toast.show(`Тарифная зона "${newCard.title}" добавлена`, "Карточка создана");
     }
     
     deleteCard(cardId) {
@@ -189,11 +197,16 @@ export class MainPage {
         }
         this.renderServices();
         
+        const excludedZones = getExcludedZones(this.services, this.filteredServices);
+        if (excludedZones.length > 0) {
+            this.toast.show(`Исключено из поиска: ${excludedZones.length} зон`, "Результаты поиска");
+        }
+        
         const count = this.filteredServices.length;
         if (count === 0) {
             this.toast.show("Ничего не найдено. Попробуйте изменить запрос.", "Результаты поиска");
         } else {
-            this.toast.show(`Найдено ${count} услуг`, "Результаты поиска");
+            this.toast.show(`Найдено ${count} тарифных зон`, "Результаты поиска");
         }
     }
     
@@ -218,7 +231,20 @@ export class MainPage {
                             <button id="add-card-btn" class="action-btn-add">
                                 <span>+</span> Добавить тарифную зону
                             </button>
+                            <button id="show-templates-btn" class="action-btn-add" style="background: var(--gold); color: var(--gray-dark);">
+                                Шаблоны зон
+                            </button>
                         </div>
+                    </div>
+                </div>
+                
+                <div id="templates-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+                    <div style="background: white; max-width: 500px; width: 90%; padding: 25px; border-left: 4px solid var(--gold);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="color: var(--purple); margin: 0;">Шаблоны тарифных зон</h3>
+                            <button id="close-modal-btn" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+                        </div>
+                        <div id="templates-list" style="max-height: 400px; overflow-y: auto;"></div>
                     </div>
                 </div>
                 
@@ -254,6 +280,47 @@ export class MainPage {
         }
     }
     
+    showTemplatesModal() {
+        const templateZone = {
+            title: "Стандартная зона",
+            price: "200",
+            maxWeight: "до 7000 кг",
+            deliveryTime: "3-4 дня",
+            insurance: "Включено"
+        };
+        const templates = createTemplateZones(3, templateZone);
+        
+        const modal = document.getElementById('templates-modal');
+        const templatesList = document.getElementById('templates-list');
+        
+        if (templatesList) {
+            templatesList.innerHTML = templates.map((t, index) => `
+                <div style="background: var(--gray-bg); padding: 12px; margin-bottom: 10px; border-left: 3px solid var(--gold);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-weight: 700; color: var(--purple);">Зона ${index + 1}</span>
+                        <span style="font-size: 12px;">ID: ${t.id}</span>
+                    </div>
+                    <div style="font-size: 13px; margin-bottom: 5px;"><strong>${t.title}</strong></div>
+                    <div style="font-size: 12px; color: var(--gray);">Цена: ${t.price} ₽</div>
+                    <div style="font-size: 12px; color: var(--gray);">Вес: ${t.maxWeight}</div>
+                    <div style="font-size: 12px; color: var(--gray);">Срок: ${t.deliveryTime}</div>
+                    <div style="font-size: 12px; color: var(--gray);">Страхование: ${t.insurance}</div>
+                </div>
+            `).join('');
+        }
+        
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+    
+    closeTemplatesModal() {
+        const modal = document.getElementById('templates-modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+    
     clickCard(serviceId) {
         const servicePage = new ServicePage(this.parent, serviceId, this.toast, this.services);
         servicePage.render();
@@ -273,6 +340,8 @@ export class MainPage {
         const searchBtn = document.getElementById('search-btn');
         const searchInput = document.getElementById('search-input');
         const addBtn = document.getElementById('add-card-btn');
+        const showTemplatesBtn = document.getElementById('show-templates-btn');
+        const closeModalBtn = document.getElementById('close-modal-btn');
         
         if (searchBtn) {
             searchBtn.addEventListener('click', () => {
@@ -293,5 +362,24 @@ export class MainPage {
                 this.copyFirstCard();
             });
         }
+        
+        if (showTemplatesBtn) {
+            showTemplatesBtn.addEventListener('click', () => {
+                this.showTemplatesModal();
+            });
+        }
+        
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                this.closeTemplatesModal();
+            });
+        }
+        
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('templates-modal');
+            if (e.target === modal) {
+                this.closeTemplatesModal();
+            }
+        });
     }
 }
