@@ -1,14 +1,18 @@
 {
   "name": "avia-cargo",
   "version": "1.0.0",
-  "description": "Расчет стоимости авиаперевозки груза",
+  "description": "Авиаперевозки грузов",
   "main": "main.js",
   "scripts": {
-    "start": "live-server"
+    "start": "live-server",
+    "dev-server": "nodemon src/index.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "bootstrap": "^5.2.3"
+    "bootstrap": "^5.2.3",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "live-server": "^1.2.2"
   }
 }
