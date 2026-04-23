@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Авиаперевозки грузов</title>
@@ -31,7 +39,22 @@
             background-color: var(--white);
             color: var(--gray-dark);
         }
-        
+
+        .globe-view-btn.active-btn {
+            background: var(--gold) !important;
+            color: var(--gray-dark) !important;
+        }
+
+        .globe-view-btn:hover {
+            background: var(--gold) !important;
+            color: var(--gray-dark) !important;
+        }
+
+        #globe-zoom-in:hover, #globe-zoom-out:hover {
+            background: var(--gold) !important;
+            color: var(--gray-dark) !important;
+        }
+                
         /* заголовок */
         .header {
             background-color: var(--white);

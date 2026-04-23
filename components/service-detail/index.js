@@ -1,3 +1,5 @@
+import { Globe3DComponent } from "../3d-globe/index.js";
+
 export class ServiceDetailComponent {
     constructor(parent) {
         this.parent = parent;
@@ -12,11 +14,6 @@ export class ServiceDetailComponent {
             time: `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                      <circle cx="12" cy="12" r="9"/>
                      <polyline points="12 7 12 12 15 15"/>
-                   </svg>`,
-            zone: `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
-                     <circle cx="12" cy="12" r="9"/>
-                     <path d="M12 2L12 7M12 12L12 14M12 22L12 17"/>
-                     <circle cx="12" cy="12" r="2"/>
                    </svg>`,
             insurance: `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                          <path d="M12 2L12 6M12 12L12 16"/>
@@ -52,12 +49,10 @@ export class ServiceDetailComponent {
     getHTML(data) {
         let titleIcon = this.getDetailIcon('category', data.category);
         
-        // Генерация списка стран
         const countriesList = data.countries.map(country => 
             `<div class="country-item">${this.getDetailIcon('country')} ${country}</div>`
         ).join('');
         
-        // Генерация карточек самолетов
         const aircraftsList = data.aircrafts.map(aircraft => `
             <div class="aircraft-card">
                 <div class="aircraft-name"> ${aircraft.name}</div>
@@ -69,8 +64,20 @@ export class ServiceDetailComponent {
         return `
             <div class="row">
                 <div class="col-md-5">
-                    <!-- ↓↓↓ СЮДА ВСТАВЬТЕ СВОЕ ФОТО ДЛЯ КАЖДОЙ ЗОНЫ ↓↓↓ -->
-                    <img src="${data.image}" class="detail-image" alt="${data.title}">
+                    <div style="margin-bottom: 15px;">
+                        <div id="globe-container" style="width: 100%; height: 400px; background: #ffffff; border: 1px solid var(--gray-border); border-radius: 8px; position: relative; overflow: hidden;"></div>
+                        
+                        <!-- Панель управления глобусом -->
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; justify-content: center; background: var(--gray-bg); padding: 8px 12px; border-radius: 8px;">
+                            <button class="globe-view-btn" data-view="front" style="background: var(--gray-bg); border: 1px solid var(--gold); padding: 5px 12px; cursor: pointer; font-size: 12px; border-radius: 4px; transition: all 0.2s;">Спереди</button>
+                            <button class="globe-view-btn" data-view="back" style="background: var(--gray-bg); border: 1px solid var(--gold); padding: 5px 12px; cursor: pointer; font-size: 12px; border-radius: 4px; transition: all 0.2s;">Сзади</button>
+                            <button class="globe-view-btn" data-view="left" style="background: var(--gray-bg); border: 1px solid var(--gold); padding: 5px 12px; cursor: pointer; font-size: 12px; border-radius: 4px; transition: all 0.2s;">Слева</button>
+                            <button class="globe-view-btn" data-view="right" style="background: var(--gray-bg); border: 1px solid var(--gold); padding: 5px 12px; cursor: pointer; font-size: 12px; border-radius: 4px; transition: all 0.2s;">Справа</button>
+                            <button class="globe-view-btn" data-view="reset" style="background: var(--gray-bg); border: 1px solid var(--gold); padding: 5px 12px; cursor: pointer; font-size: 12px; border-radius: 4px; transition: all 0.2s;">Сброс</button>
+                            <button id="globe-zoom-in" style="background: var(--gray-bg); border: 1px solid var(--gold); padding: 5px 12px; cursor: pointer; font-size: 14px; font-weight: bold; border-radius: 4px; transition: all 0.2s;">+</button>
+                            <button id="globe-zoom-out" style="background: var(--gray-bg); border: 1px solid var(--gold); padding: 5px 12px; cursor: pointer; font-size: 14px; font-weight: bold; border-radius: 4px; transition: all 0.2s;">-</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-7">
                     <div class="detail-title">
@@ -99,17 +106,15 @@ export class ServiceDetailComponent {
                         </div>
                     </div>
                     
-                    <!-- Блок стран -->
                     <div style="margin-top: 20px;">
-                        <div style="font-weight: 600; color: var(--purple); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; margin-left: -8px;"">
-                            ${this.getDetailIcon('country')}Страны доставки:
+                        <div style="font-weight: 600; color: var(--purple); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                            ${this.getDetailIcon('country')} Страны доставки:
                         </div>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
                             ${countriesList}
                         </div>
                     </div>
                     
-                    <!-- Блок самолетов -->
                     <div style="margin-top: 20px;">
                         <div style="font-weight: 600; color: var(--purple); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
                             Рекомендуемые типы воздушных судов:
@@ -138,5 +143,58 @@ export class ServiceDetailComponent {
         const html = this.getHTML(data);
         this.parent.insertAdjacentHTML('beforeend', html);
         this.addListeners(data, toastCallback);
+        
+        const globeContainer = document.getElementById('globe-container');
+        if (globeContainer) {
+            const globe = new Globe3DComponent('globe-container', '/models/earth.glb');
+            globe.init();
+            
+            globeContainer._globeInstance = globe;
+            
+            // Обработчики для кнопок видов
+            const viewBtns = document.querySelectorAll('.globe-view-btn');
+            viewBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Убираем активный класс со всех кнопок
+                    viewBtns.forEach(b => b.classList.remove('active-btn'));
+                    btn.classList.add('active-btn');
+                    
+                    const view = btn.getAttribute('data-view');
+                    if (view === 'reset') {
+                        globe.resetView();
+                    } else {
+                        globe.setView(view);
+                    }
+                });
+            });
+            
+            // Обработчики для кнопок зума
+            const zoomInBtn = document.getElementById('globe-zoom-in');
+            const zoomOutBtn = document.getElementById('globe-zoom-out');
+            
+            if (zoomInBtn) {
+                zoomInBtn.addEventListener('click', () => {
+                    if (globe.camera && globe.controls) {
+                        const newZoom = globe.camera.position.z - 0.3;
+                        if (newZoom >= 1.5) {
+                            globe.camera.position.z = newZoom;
+                            globe.controls.update();
+                        }
+                    }
+                });
+            }
+            
+            if (zoomOutBtn) {
+                zoomOutBtn.addEventListener('click', () => {
+                    if (globe.camera && globe.controls) {
+                        const newZoom = globe.camera.position.z + 0.3;
+                        if (newZoom <= 6) {
+                            globe.camera.position.z = newZoom;
+                            globe.controls.update();
+                        }
+                    }
+                });
+            }
+        }
     }
 }
