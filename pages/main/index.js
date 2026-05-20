@@ -2,13 +2,14 @@ import { ServiceCardComponent } from "../../components/service-card/index.js";
 import { CalculatorComponent } from "../../components/calculator/index.js";
 import { ServicePage } from "../service/index.js";
 import { ToastComponent } from "../../components/toast/index.js";
+import { isEqualTariffZone, getExcludedZones, mergeTariffData } from "../../utils/helpers.js";
 
 export class MainPage {
     constructor(parent) {
         this.parent = parent;
         this.toast = new ToastComponent();
-        this.services = this.getInitialData();
-        this.filteredServices = [...this.services];
+        this.rate_zones = this.getInitialData();           // ← rate_zones
+        this.filteredZones = [...this.rate_zones];        // ← filteredZones
         this.nextId = 7;
     }
     
@@ -19,7 +20,6 @@ export class MainPage {
                 title: "Тарифная зона 1 (Европа)",
                 shortDesc: "Страны ЕС, Великобритания, Швейцария, Норвегия",
                 fullDesc: "Ежедневные рейсы из всех основных аэропортов. Быстрая доставка до двери.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
                 image: "",
                 price: "120",
                 unit: "кг",
@@ -41,7 +41,6 @@ export class MainPage {
                 title: "Тарифная зона 2 (Азия)",
                 shortDesc: "Китай, Япония, Южная Корея, Сингапур",
                 fullDesc: "Регулярные рейсы с фиксированным расписанием. Экспресс-доставка крупных партий.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
                 image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
                 price: "180",
                 unit: "кг",
@@ -63,7 +62,6 @@ export class MainPage {
                 title: "Тарифная зона 3 (Америка)",
                 shortDesc: "США, Канада, Бразилия, Мексика",
                 fullDesc: "Трансатлантические и транстихоокеанские маршруты. Полное таможенное сопровождение.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
                 image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
                 price: "250",
                 unit: "кг",
@@ -85,7 +83,6 @@ export class MainPage {
                 title: "Тарифная зона 4 (Ближний Восток)",
                 shortDesc: "ОАЭ, Катар, Саудовская Аравия, Израиль",
                 fullDesc: "Регулярные рейсы в основные хабы. Быстрая обработка грузов.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
                 image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
                 price: "200",
                 unit: "кг",
@@ -107,7 +104,6 @@ export class MainPage {
                 title: "Тарифная зона 5 (СНГ и Средняя Азия)",
                 shortDesc: "Казахстан, Узбекистан, Азербайджан, Армения",
                 fullDesc: "Быстрая доставка по странам СНГ. Индивидуальный подход.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
                 image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
                 price: "100",
                 unit: "кг",
@@ -129,7 +125,6 @@ export class MainPage {
                 title: "Тарифная зона 6 (Африка)",
                 shortDesc: "ЮАР, Египет, Кения, Нигерия",
                 fullDesc: "Специализированные рейсы в Африку. Работа с местными авиакомпаниями.",
-                // ↓↓↓ СЮДА ВСТАВЬТЕ ССЫЛКУ НА ФОТО ДЛЯ ЭТОЙ КАРТОЧКИ ↓↓↓
                 image: "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=800",
                 price: "300",
                 unit: "кг",
@@ -150,50 +145,82 @@ export class MainPage {
     }
     
     copyFirstCard() {
-        const firstCard = this.services[0];
-        if (!firstCard) return;
+        const firstZone = this.rate_zones[0];
+        if (!firstZone) return;
         
-        const newCard = {
-            ...firstCard,
-            id: this.nextId++,
-            title: `${firstCard.title} (копия)`,
-            shortDesc: `${firstCard.shortDesc} (добавлено)`
+        const isDuplicate = this.rate_zones.some(zone => 
+            isEqualTariffZone(zone, firstZone)
+        );
+        
+        if (isDuplicate) {
+            this.toast.show("Такая тарифная зона уже существует! Копирование отменено.", "Ошибка");
+            return;
+        }
+        
+        const metaData = {
+            copiedAt: new Date().toLocaleString(),
+            source: "копия"
         };
         
-        this.services.push(newCard);
-        this.filteredServices = [...this.services];
+        const newZone = mergeTariffData(
+            { ...firstZone, id: this.nextId++ },
+            { title: `${firstZone.title} (копия)`, shortDesc: `${firstZone.shortDesc} (добавлено)` },
+            metaData
+        );
+        
+        this.rate_zones.push(newZone);
+        this.filteredZones = [...this.rate_zones];
         this.renderServices();
-        this.toast.show(`Услуга "${newCard.title}" добавлена`, "Карточка создана");
+        this.toast.show(`Тарифная зона "${newZone.title}" добавлена`, "Карточка создана");
     }
     
     deleteCard(cardId) {
-        const cardToDelete = this.services.find(s => s.id === cardId);
-        if (!cardToDelete) return;
+        const zoneToDelete = this.rate_zones.find(s => s.id === cardId);
+        if (!zoneToDelete) return;
         
-        this.services = this.services.filter(s => s.id !== cardId);
-        this.filteredServices = this.filteredServices.filter(s => s.id !== cardId);
+        this.rate_zones = this.rate_zones.filter(s => s.id !== cardId);
+        this.filteredZones = this.filteredZones.filter(s => s.id !== cardId);
         this.renderServices();
-        this.toast.show(`Услуга "${cardToDelete.title}" удалена`, "Карточка удалена");
+        this.toast.show(`Тарифная зона "${zoneToDelete.title}" удалена`, "Карточка удалена");
     }
     
     searchServices(searchTerm) {
         if (!searchTerm.trim()) {
-            this.filteredServices = [...this.services];
-        } else {
-            const term = searchTerm.toLowerCase().trim();
-            this.filteredServices = this.services.filter(service => 
-                service.title.toLowerCase().includes(term) ||
-                service.shortDesc.toLowerCase().includes(term) ||
-                service.category.toLowerCase().includes(term)
-            );
+            this.filteredZones = [...this.rate_zones];
+            this.renderServices();
+            this.toast.show(`Показаны все ${this.rate_zones.length} зон`, "Сброс поиска");
+            return;
         }
+        
+        const searchPrice = parseInt(searchTerm.trim());
+        
+        if (searchPrice < 0) {
+            this.toast.show("Цена не может быть отрицательной", "Ошибка поиска");
+            return;
+        }
+        
+        if (isNaN(searchPrice)) {
+            this.toast.show("Введите числовое значение цены", "Ошибка поиска");
+            return;
+        }
+        
+        this.filteredZones = this.rate_zones.filter(zone => {
+            const zonePrice = parseInt(zone.price);
+            return zonePrice === searchPrice;
+        });
+        
         this.renderServices();
         
-        const count = this.filteredServices.length;
+        const excludedZones = getExcludedZones(this.rate_zones, this.filteredZones);
+        if (excludedZones.length > 0) {
+            this.toast.show(`Исключено из поиска: ${excludedZones.length} зон`, "Результаты поиска");
+        }
+        
+        const count = this.filteredZones.length;
         if (count === 0) {
-            this.toast.show("Ничего не найдено. Попробуйте изменить запрос.", "Результаты поиска");
+            this.toast.show(`Зон с ценой ${searchPrice} ₽ не найдено`, "Результаты поиска");
         } else {
-            this.toast.show(`Найдено ${count} услуг`, "Результаты поиска");
+            this.toast.show(`Найдено ${count} зон с ценой ${searchPrice} ₽`, "Результаты поиска");
         }
     }
     
@@ -211,7 +238,7 @@ export class MainPage {
                 <div class="control-panel">
                     <div class="control-group">
                         <div class="search-box">
-                            <input type="text" id="search-input" placeholder="Поиск по тарифной зоне или типу ВС..." class="search-input">
+                            <input type="number" id="search-input" placeholder="Поиск по точной цене (₽)" class="search-input" min="0" step="1">
                             <button id="search-btn" class="search-btn">🔍 Найти</button>
                         </div>
                         <div class="action-buttons">
@@ -227,7 +254,7 @@ export class MainPage {
                         <div class="section-title-wrapper">
                             <div>
                                 <div class="section-title">Тарифные зоны</div>
-                                <div class="section-subtitle" id="services-count">Всего: ${this.filteredServices.length}</div>
+                                <div class="section-subtitle" id="services-count">Всего: ${this.filteredZones.length}</div>
                             </div>
                         </div>
                     </div>
@@ -243,19 +270,19 @@ export class MainPage {
         
         pageRoot.innerHTML = '';
         
-        this.filteredServices.forEach((service) => {
+        this.filteredZones.forEach((zone) => {
             const serviceCard = new ServiceCardComponent(pageRoot);
-            serviceCard.render(service, this.clickCard.bind(this), this.deleteCard.bind(this));
+            serviceCard.render(zone, this.clickCard.bind(this), this.deleteCard.bind(this));
         });
         
         const countElement = document.getElementById('services-count');
         if (countElement) {
-            countElement.textContent = `Всего: ${this.filteredServices.length}`;
+            countElement.textContent = `Всего: ${this.filteredZones.length}`;
         }
     }
     
-    clickCard(serviceId) {
-        const servicePage = new ServicePage(this.parent, serviceId, this.toast, this.services);
+    clickCard(zoneId) {
+        const servicePage = new ServicePage(this.parent, zoneId, this.toast, this.rate_zones);
         servicePage.render();
     }
     
