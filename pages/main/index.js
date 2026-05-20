@@ -184,17 +184,36 @@ export class MainPage {
         this.toast.show(`Услуга "${cardToDelete.title}" удалена`, "Карточка удалена");
     }
     
+    // ПОИСК ПО ТОЧНОЙ ЦЕНЕ
     searchServices(searchTerm) {
+        // Запрещаем отрицательные значения
         if (!searchTerm.trim()) {
             this.filteredServices = [...this.services];
-        } else {
-            const term = searchTerm.toLowerCase().trim();
-            this.filteredServices = this.services.filter(service => 
-                service.title.toLowerCase().includes(term) ||
-                service.shortDesc.toLowerCase().includes(term) ||
-                service.category.toLowerCase().includes(term)
-            );
+            this.renderServices();
+            this.toast.show(`Показаны все ${this.services.length} зон`, "Сброс поиска");
+            return;
         }
+        
+        const searchPrice = parseInt(searchTerm.trim());
+        
+        // Проверка на отрицательное число
+        if (searchPrice < 0) {
+            this.toast.show("Цена не может быть отрицательной", "Ошибка поиска");
+            return;
+        }
+        
+        // Проверка, что введено число
+        if (isNaN(searchPrice)) {
+            this.toast.show("Введите числовое значение цены", "Ошибка поиска");
+            return;
+        }
+        
+        // Точный поиск по цене
+        this.filteredServices = this.services.filter(service => {
+            const servicePrice = parseInt(service.price);
+            return servicePrice === searchPrice;
+        });
+        
         this.renderServices();
         
         const excludedZones = getExcludedZones(this.services, this.filteredServices);
@@ -204,9 +223,9 @@ export class MainPage {
         
         const count = this.filteredServices.length;
         if (count === 0) {
-            this.toast.show("Ничего не найдено. Попробуйте изменить запрос.", "Результаты поиска");
+            this.toast.show(`Зон с ценой ${searchPrice} ₽ не найдено`, "Результаты поиска");
         } else {
-            this.toast.show(`Найдено ${count} тарифных зон`, "Результаты поиска");
+            this.toast.show(`Найдено ${count} зон с ценой ${searchPrice} ₽`, "Результаты поиска");
         }
     }
     
@@ -224,7 +243,7 @@ export class MainPage {
                 <div class="control-panel">
                     <div class="control-group">
                         <div class="search-box">
-                            <input type="text" id="search-input" placeholder="Поиск по тарифной зоне или типу ВС..." class="search-input">
+                            <input type="number" id="search-input" placeholder="Поиск по точной цене (₽)" class="search-input" min="0" step="1">
                             <button id="search-btn" class="search-btn">🔍 Найти</button>
                         </div>
                         <div class="action-buttons">
