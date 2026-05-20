@@ -7,23 +7,23 @@ export class ServiceDetailComponent {
     
     getDetailIcon(type, category = null) {
         const icons = {
-            weight: `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
+            weight: `<svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                         <circle cx="12" cy="12" r="9"/>
                         <path d="M12 8L12 12L15 15"/>
                      </svg>`,
-            time: `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
+            time: `<svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                      <circle cx="12" cy="12" r="9"/>
                      <polyline points="12 7 12 12 15 15"/>
                    </svg>`,
-            insurance: `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
+            insurance: `<svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                          <path d="M12 2L12 6M12 12L12 16"/>
                          <path d="M5 8L12 2L19 8L19 16L12 22L5 16L5 8Z"/>
                        </svg>`,
-            features: `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
+            features: `<svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                         <path d="M9 12L11 14L15 10"/>
                         <circle cx="12" cy="12" r="9"/>
                       </svg>`,
-            airplane: `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
+            airplane: `<svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                          <path d="M12 2L12 7M12 2L9 5M12 2L15 5"/>
                          <path d="M5 12L19 12"/>
                          <path d="M3 17L21 17"/>
@@ -31,7 +31,7 @@ export class ServiceDetailComponent {
                          <path d="M6 12L4 17"/>
                          <path d="M18 12L20 17"/>
                        </svg>`,
-            country: `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
+            country: `<svg width="12" height="12" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" style="display: inline-block; vertical-align: middle;">
                         <circle cx="12" cy="12" r="9"/>
                         <path d="M2 12L22 12"/>
                         <path d="M12 2C9 6 9 18 12 22"/>
@@ -49,8 +49,18 @@ export class ServiceDetailComponent {
     getHTML(data) {
         let titleIcon = this.getDetailIcon('category', data.category);
         
+        // Маленькая иконка для стран (без текста)
+        const countryIcon = `<svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" style="display: inline-block; vertical-align: middle;">
+                                <circle cx="12" cy="12" r="9"/>
+                                <path d="M2 12L22 12"/>
+                                <path d="M12 2C9 6 9 18 12 22"/>
+                                <path d="M12 2C15 6 15 18 12 22"/>
+                            </svg>`;
+        
         const countriesList = data.countries.map(country => 
-            `<div class="country-item">${this.getDetailIcon('country')} ${country}</div>`
+            `<div class="country-item" style="display: inline-flex; align-items: center; gap: 5px; background: var(--gray-bg); padding: 5px 12px; font-size: 13px; color: var(--gray-dark);">
+                ${countryIcon} ${country}
+            </div>`
         ).join('');
         
         const aircraftsList = data.aircrafts.map(aircraft => `
@@ -106,9 +116,10 @@ export class ServiceDetailComponent {
                         </div>
                     </div>
                     
+                    <!-- Страны доставки (без большого глобуса) -->
                     <div style="margin-top: 20px;">
-                        <div style="font-weight: 600; color: var(--purple); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            ${this.getDetailIcon('country')} Страны доставки:
+                        <div style="font-weight: 600; color: var(--purple); margin-bottom: 10px;">
+                            🌍 Страны доставки:
                         </div>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
                             ${countriesList}
@@ -151,11 +162,9 @@ export class ServiceDetailComponent {
             
             globeContainer._globeInstance = globe;
             
-            // Обработчики для кнопок видов
             const viewBtns = document.querySelectorAll('.globe-view-btn');
             viewBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // Убираем активный класс со всех кнопок
                     viewBtns.forEach(b => b.classList.remove('active-btn'));
                     btn.classList.add('active-btn');
                     
@@ -168,7 +177,6 @@ export class ServiceDetailComponent {
                 });
             });
             
-            // Обработчики для кнопок зума
             const zoomInBtn = document.getElementById('globe-zoom-in');
             const zoomOutBtn = document.getElementById('globe-zoom-out');
             

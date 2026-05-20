@@ -4,149 +4,40 @@ import { ServicePage } from "../service/index.js";
 import { ToastComponent } from "../../components/toast/index.js";
 import { isEqualTariffZone, getExcludedZones, mergeTariffData } from "../../utils/helpers.js";
 
+const API_URL = 'http://localhost:3000/stocks';
+
 export class MainPage {
     constructor(parent) {
         this.parent = parent;
         this.toast = new ToastComponent();
-        this.rate_zones = this.getInitialData();           // ← rate_zones
-        this.filteredZones = [...this.rate_zones];        // ← filteredZones
+        this.rate_zones = [];
+        this.filteredZones = [];
         this.nextId = 7;
     }
     
-    getInitialData() {
-        return [
-            {
-                id: 1,
-                title: "Тарифная зона 1 (Европа)",
-                shortDesc: "Страны ЕС, Великобритания, Швейцария, Норвегия",
-                fullDesc: "Ежедневные рейсы из всех основных аэропортов. Быстрая доставка до двери.",
-                image: "Europe.png",
-                price: "120",
-                unit: "кг",
-                maxWeight: "до 5000 кг",
-                deliveryTime: "2-3 дня",
-                zone: "Европа",
-                insurance: "Включено",
-                features: "Ежедневные рейсы",
-                category: "Тарифная зона",
-                countries: ["Германия", "Франция", "Италия", "Испания", "Великобритания", "Швейцария", "Норвегия", "Польша", "Чехия", "Австрия", "Бельгия", "Нидерланды"],
-                aircrafts: [
-                    { name: "Boeing 737-800F", capacity: "до 23 тонн", range: "3,600 км" },
-                    { name: "Airbus A321F", capacity: "до 27 тонн", range: "3,700 км" },
-                    { name: "Boeing 767-300F", capacity: "до 60 тонн", range: "6,000 км" }
-                ]
-            },
-            {
-                id: 2,
-                title: "Тарифная зона 2 (Азия)",
-                shortDesc: "Китай, Япония, Южная Корея, Сингапур",
-                fullDesc: "Регулярные рейсы с фиксированным расписанием. Экспресс-доставка крупных партий.",
-                image: "Azia.png",
-                price: "180",
-                unit: "кг",
-                maxWeight: "до 10000 кг",
-                deliveryTime: "3-5 дней",
-                zone: "Азия",
-                insurance: "Включено",
-                features: "Экспресс-доставка",
-                category: "Тарифная зона",
-                countries: ["Китай", "Япония", "Южная Корея", "Сингапур", "Таиланд", "Вьетнам", "Малайзия", "Индия"],
-                aircrafts: [
-                    { name: "Boeing 777F", capacity: "до 102 тонн", range: "9,070 км" },
-                    { name: "Boeing 747-400F", capacity: "до 112 тонн", range: "8,230 км" },
-                    { name: "Airbus A330-200F", capacity: "до 70 тонн", range: "7,400 км" }
-                ]
-            },
-            {
-                id: 3,
-                title: "Тарифная зона 3 (Америка)",
-                shortDesc: "США, Канада, Бразилия, Мексика",
-                fullDesc: "Трансатлантические и транстихоокеанские маршруты. Полное таможенное сопровождение.",
-                image: "America.avif",
-                price: "250",
-                unit: "кг",
-                maxWeight: "до 20000 кг",
-                deliveryTime: "4-7 дней",
-                zone: "Америка",
-                insurance: "Включено",
-                features: "Таможенное сопровождение",
-                category: "Тарифная зона",
-                countries: ["США", "Канада", "Бразилия", "Мексика", "Аргентина", "Чили", "Перу", "Колумбия"],
-                aircrafts: [
-                    { name: "Boeing 777F", capacity: "до 102 тонн", range: "9,070 км" },
-                    { name: "Boeing 747-400F", capacity: "до 112 тонн", range: "8,230 км" },
-                    { name: "Airbus A330-200F", capacity: "до 70 тонн", range: "7,400 км" }
-                ]
-            },
-            {
-                id: 4,
-                title: "Тарифная зона 4 (Ближний Восток)",
-                shortDesc: "ОАЭ, Катар, Саудовская Аравия, Израиль",
-                fullDesc: "Регулярные рейсы в основные хабы. Быстрая обработка грузов.",
-                image: "Bligni Vostok.webp",
-                price: "200",
-                unit: "кг",
-                maxWeight: "до 8000 кг",
-                deliveryTime: "3-4 дня",
-                zone: "Ближний Восток",
-                insurance: "Включено",
-                features: "Регулярные рейсы",
-                category: "Тарифная зона",
-                countries: ["ОАЭ", "Катар", "Саудовская Аравия", "Израиль", "Кувейт", "Оман", "Бахрейн"],
-                aircrafts: [
-                    { name: "Boeing 777F", capacity: "до 102 тонн", range: "9,070 км" },
-                    { name: "Boeing 747-400F", capacity: "до 112 тонн", range: "8,230 км" },
-                    { name: "Airbus A330-200F", capacity: "до 70 тонн", range: "7,400 км" }
-                ]
-            },
-            {
-                id: 5,
-                title: "Тарифная зона 5 (СНГ и Средняя Азия)",
-                shortDesc: "Казахстан, Узбекистан, Азербайджан, Армения",
-                fullDesc: "Быстрая доставка по странам СНГ. Индивидуальный подход.",
-                image: "CNG&Azia.avif",
-                price: "100",
-                unit: "кг",
-                maxWeight: "до 3000 кг",
-                deliveryTime: "1-2 дня",
-                zone: "СНГ",
-                insurance: "Включено",
-                features: "Регулярные рейсы",
-                category: "Тарифная зона",
-                countries: ["Казахстан", "Узбекистан", "Азербайджан", "Армения", "Киргизия", "Таджикистан", "Туркменистан", "Грузия"],
-                aircrafts: [
-                    { name: "Ил-76ТД", capacity: "до 48 тонн", range: "6,700 км" },
-                    { name: "Boeing 737-800F", capacity: "до 23 тонн", range: "3,600 км" },
-                    { name: "Airbus A321F", capacity: "до 27 тонн", range: "3,700 км" }
-                ]
-            },
-            {
-                id: 6,
-                title: "Тарифная зона 6 (Африка)",
-                shortDesc: "ЮАР, Египет, Кения, Нигерия",
-                fullDesc: "Специализированные рейсы в Африку. Работа с местными авиакомпаниями.",
-                image: "Africa.jpg",
-                price: "300",
-                unit: "кг",
-                maxWeight: "до 15000 кг",
-                deliveryTime: "5-8 дней",
-                zone: "Африка",
-                insurance: "Включено",
-                features: "Чартерные рейсы",
-                category: "Тарифная зона",
-                countries: ["ЮАР", "Египет", "Кения", "Нигерия", "Марокко", "Тунис", "Алжир", "Гана"],
-                aircrafts: [
-                    { name: "Antonov An-124-100", capacity: "до 150 тонн", range: "5,400 км" },
-                    { name: "Boeing 747-400F", capacity: "до 112 тонн", range: "8,230 км" },
-                    { name: "Ил-76ТД", capacity: "до 48 тонн", range: "6,700 км" }
-                ]
-            }
-        ];
+    async loadData() {
+        try {
+            const response = await fetch(API_URL);
+            if (!response.ok) throw new Error('Ошибка загрузки');
+            this.rate_zones = await response.json();
+            this.filteredZones = [...this.rate_zones];
+            this.renderServices();
+            this.toast.show(`Загружено ${this.rate_zones.length} тарифных зон`, "Данные получены");
+        } catch (error) {
+            console.error('Ошибка загрузки данных:', error);
+            this.toast.show('Не удалось загрузить данные с сервера', "Ошибка");
+            this.rate_zones = [];
+            this.filteredZones = [];
+            this.renderServices();
+        }
     }
     
-    copyFirstCard() {
+    async copyFirstCard() {
         const firstZone = this.rate_zones[0];
-        if (!firstZone) return;
+        if (!firstZone) {
+            this.toast.show("Нет зон для копирования", "Ошибка");
+            return;
+        }
         
         const isDuplicate = this.rate_zones.some(zone => 
             isEqualTariffZone(zone, firstZone)
@@ -157,37 +48,60 @@ export class MainPage {
             return;
         }
         
-        const metaData = {
-            copiedAt: new Date().toLocaleString(),
-            source: "копия"
+        const newZoneData = {
+            title: `${firstZone.title} (копия)`,
+            shortDesc: `${firstZone.shortDesc} (добавлено)`,
+            fullDesc: firstZone.fullDesc,
+            image: firstZone.image,
+            price: firstZone.price,
+            unit: firstZone.unit,
+            maxWeight: firstZone.maxWeight,
+            deliveryTime: firstZone.deliveryTime,
+            zone: firstZone.zone,
+            insurance: firstZone.insurance,
+            features: firstZone.features,
+            category: firstZone.category,
+            countries: firstZone.countries,
+            aircrafts: firstZone.aircrafts
         };
         
-        const newZone = mergeTariffData(
-            { ...firstZone, id: this.nextId++ },
-            { title: `${firstZone.title} (копия)`, shortDesc: `${firstZone.shortDesc} (добавлено)` },
-            metaData
-        );
-        
-        this.rate_zones.push(newZone);
-        this.filteredZones = [...this.rate_zones];
-        this.renderServices();
-        this.toast.show(`Тарифная зона "${newZone.title}" добавлена`, "Карточка создана");
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newZoneData)
+            });
+            
+            if (!response.ok) throw new Error('Ошибка создания');
+            
+            const newZone = await response.json();
+            await this.loadData(); // Перезагружаем данные
+            this.toast.show(`Тарифная зона "${newZone.title}" добавлена`, "Карточка создана");
+        } catch (error) {
+            console.error('Ошибка создания:', error);
+            this.toast.show('Не удалось создать зону', "Ошибка");
+        }
     }
     
-    deleteCard(cardId) {
-        const zoneToDelete = this.rate_zones.find(s => s.id === cardId);
-        if (!zoneToDelete) return;
-        
-        this.rate_zones = this.rate_zones.filter(s => s.id !== cardId);
-        this.filteredZones = this.filteredZones.filter(s => s.id !== cardId);
-        this.renderServices();
-        this.toast.show(`Тарифная зона "${zoneToDelete.title}" удалена`, "Карточка удалена");
+    async deleteCard(cardId) {
+        try {
+            const response = await fetch(`${API_URL}/${cardId}`, {
+                method: 'DELETE'
+            });
+            
+            if (!response.ok) throw new Error('Ошибка удаления');
+            
+            await this.loadData(); // Перезагружаем данные
+            this.toast.show(`Тарифная зона удалена`, "Карточка удалена");
+        } catch (error) {
+            console.error('Ошибка удаления:', error);
+            this.toast.show('Не удалось удалить зону', "Ошибка");
+        }
     }
     
-    searchServices(searchTerm) {
+    async searchServices(searchTerm) {
         if (!searchTerm.trim()) {
-            this.filteredZones = [...this.rate_zones];
-            this.renderServices();
+            await this.loadData();
             this.toast.show(`Показаны все ${this.rate_zones.length} зон`, "Сброс поиска");
             return;
         }
@@ -204,23 +118,22 @@ export class MainPage {
             return;
         }
         
-        this.filteredZones = this.rate_zones.filter(zone => {
-            const zonePrice = parseInt(zone.price);
-            return zonePrice === searchPrice;
-        });
-        
-        this.renderServices();
-        
-        const excludedZones = getExcludedZones(this.rate_zones, this.filteredZones);
-        if (excludedZones.length > 0) {
-            this.toast.show(`Исключено из поиска: ${excludedZones.length} зон`, "Результаты поиска");
-        }
-        
-        const count = this.filteredZones.length;
-        if (count === 0) {
-            this.toast.show(`Зон с ценой ${searchPrice} ₽ не найдено`, "Результаты поиска");
-        } else {
-            this.toast.show(`Найдено ${count} зон с ценой ${searchPrice} ₽`, "Результаты поиска");
+        try {
+            const response = await fetch(`${API_URL}?price=${searchPrice}`);
+            if (!response.ok) throw new Error('Ошибка поиска');
+            
+            this.filteredZones = await response.json();
+            this.renderServices();
+            
+            const count = this.filteredZones.length;
+            if (count === 0) {
+                this.toast.show(`Зон с ценой ${searchPrice} ₽ не найдено`, "Результаты поиска");
+            } else {
+                this.toast.show(`Найдено ${count} зон с ценой ${searchPrice} ₽`, "Результаты поиска");
+            }
+        } catch (error) {
+            console.error('Ошибка поиска:', error);
+            this.toast.show('Ошибка поиска', "Ошибка");
         }
     }
     
@@ -286,7 +199,7 @@ export class MainPage {
         servicePage.render();
     }
     
-    render() {
+    async render() {
         this.parent.innerHTML = '';
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
@@ -295,7 +208,8 @@ export class MainPage {
         const calculator = new CalculatorComponent(calculatorContainer);
         calculator.render(this.toast.show.bind(this.toast));
         
-        this.renderServices();
+        // Загружаем данные перед рендером карточек
+        await this.loadData();
         
         const searchBtn = document.getElementById('search-btn');
         const searchInput = document.getElementById('search-input');

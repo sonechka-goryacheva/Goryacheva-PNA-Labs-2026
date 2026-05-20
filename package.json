@@ -10,5 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^5.2.3"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
   }
 }
