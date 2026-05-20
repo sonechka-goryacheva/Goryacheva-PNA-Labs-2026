@@ -2,14 +2,14 @@ import { ServiceCardComponent } from "../../components/service-card/index.js";
 import { CalculatorComponent } from "../../components/calculator/index.js";
 import { ServicePage } from "../service/index.js";
 import { ToastComponent } from "../../components/toast/index.js";
-import { isEqualTariffZone, getExcludedZones, mergeTariffData, createTemplateZones } from "../../utils/helpers.js";
+import { isEqualTariffZone, getExcludedZones, mergeTariffData } from "../../utils/helpers.js";
 
 export class MainPage {
     constructor(parent) {
         this.parent = parent;
         this.toast = new ToastComponent();
-        this.services = this.getInitialData();
-        this.filteredServices = [...this.services];
+        this.rate_zones = this.getInitialData();           // ← rate_zones
+        this.filteredZones = [...this.rate_zones];        // ← filteredZones
         this.nextId = 7;
     }
     
@@ -145,11 +145,11 @@ export class MainPage {
     }
     
     copyFirstCard() {
-        const firstCard = this.services[0];
-        if (!firstCard) return;
+        const firstZone = this.rate_zones[0];
+        if (!firstZone) return;
         
-        const isDuplicate = this.services.some(zone => 
-            isEqualTariffZone(zone, firstCard)
+        const isDuplicate = this.rate_zones.some(zone => 
+            isEqualTariffZone(zone, firstZone)
         );
         
         if (isDuplicate) {
@@ -162,66 +162,61 @@ export class MainPage {
             source: "копия"
         };
         
-        const newCard = mergeTariffData(
-            { ...firstCard, id: this.nextId++ },
-            { title: `${firstCard.title} (копия)`, shortDesc: `${firstCard.shortDesc} (добавлено)` },
+        const newZone = mergeTariffData(
+            { ...firstZone, id: this.nextId++ },
+            { title: `${firstZone.title} (копия)`, shortDesc: `${firstZone.shortDesc} (добавлено)` },
             metaData
         );
         
-        this.services.push(newCard);
-        this.filteredServices = [...this.services];
+        this.rate_zones.push(newZone);
+        this.filteredZones = [...this.rate_zones];
         this.renderServices();
-        this.toast.show(`Тарифная зона "${newCard.title}" добавлена`, "Карточка создана");
+        this.toast.show(`Тарифная зона "${newZone.title}" добавлена`, "Карточка создана");
     }
     
     deleteCard(cardId) {
-        const cardToDelete = this.services.find(s => s.id === cardId);
-        if (!cardToDelete) return;
+        const zoneToDelete = this.rate_zones.find(s => s.id === cardId);
+        if (!zoneToDelete) return;
         
-        this.services = this.services.filter(s => s.id !== cardId);
-        this.filteredServices = this.filteredServices.filter(s => s.id !== cardId);
+        this.rate_zones = this.rate_zones.filter(s => s.id !== cardId);
+        this.filteredZones = this.filteredZones.filter(s => s.id !== cardId);
         this.renderServices();
-        this.toast.show(`Услуга "${cardToDelete.title}" удалена`, "Карточка удалена");
+        this.toast.show(`Тарифная зона "${zoneToDelete.title}" удалена`, "Карточка удалена");
     }
     
-    // ПОИСК ПО ТОЧНОЙ ЦЕНЕ
     searchServices(searchTerm) {
-        // Запрещаем отрицательные значения
         if (!searchTerm.trim()) {
-            this.filteredServices = [...this.services];
+            this.filteredZones = [...this.rate_zones];
             this.renderServices();
-            this.toast.show(`Показаны все ${this.services.length} зон`, "Сброс поиска");
+            this.toast.show(`Показаны все ${this.rate_zones.length} зон`, "Сброс поиска");
             return;
         }
         
         const searchPrice = parseInt(searchTerm.trim());
         
-        // Проверка на отрицательное число
         if (searchPrice < 0) {
             this.toast.show("Цена не может быть отрицательной", "Ошибка поиска");
             return;
         }
         
-        // Проверка, что введено число
         if (isNaN(searchPrice)) {
             this.toast.show("Введите числовое значение цены", "Ошибка поиска");
             return;
         }
         
-        // Точный поиск по цене
-        this.filteredServices = this.services.filter(service => {
-            const servicePrice = parseInt(service.price);
-            return servicePrice === searchPrice;
+        this.filteredZones = this.rate_zones.filter(zone => {
+            const zonePrice = parseInt(zone.price);
+            return zonePrice === searchPrice;
         });
         
         this.renderServices();
         
-        const excludedZones = getExcludedZones(this.services, this.filteredServices);
+        const excludedZones = getExcludedZones(this.rate_zones, this.filteredZones);
         if (excludedZones.length > 0) {
             this.toast.show(`Исключено из поиска: ${excludedZones.length} зон`, "Результаты поиска");
         }
         
-        const count = this.filteredServices.length;
+        const count = this.filteredZones.length;
         if (count === 0) {
             this.toast.show(`Зон с ценой ${searchPrice} ₽ не найдено`, "Результаты поиска");
         } else {
@@ -250,20 +245,7 @@ export class MainPage {
                             <button id="add-card-btn" class="action-btn-add">
                                 <span>+</span> Добавить тарифную зону
                             </button>
-                            <button id="show-templates-btn" class="action-btn-add" style="background: var(--gold); color: var(--gray-dark);">
-                                Шаблоны зон
-                            </button>
                         </div>
-                    </div>
-                </div>
-                
-                <div id="templates-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-                    <div style="background: white; max-width: 500px; width: 90%; padding: 25px; border-left: 4px solid var(--gold);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h3 style="color: var(--purple); margin: 0;">Шаблоны тарифных зон</h3>
-                            <button id="close-modal-btn" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
-                        </div>
-                        <div id="templates-list" style="max-height: 400px; overflow-y: auto;"></div>
                     </div>
                 </div>
                 
@@ -272,7 +254,7 @@ export class MainPage {
                         <div class="section-title-wrapper">
                             <div>
                                 <div class="section-title">Тарифные зоны</div>
-                                <div class="section-subtitle" id="services-count">Всего: ${this.filteredServices.length}</div>
+                                <div class="section-subtitle" id="services-count">Всего: ${this.filteredZones.length}</div>
                             </div>
                         </div>
                     </div>
@@ -288,60 +270,19 @@ export class MainPage {
         
         pageRoot.innerHTML = '';
         
-        this.filteredServices.forEach((service) => {
+        this.filteredZones.forEach((zone) => {
             const serviceCard = new ServiceCardComponent(pageRoot);
-            serviceCard.render(service, this.clickCard.bind(this), this.deleteCard.bind(this));
+            serviceCard.render(zone, this.clickCard.bind(this), this.deleteCard.bind(this));
         });
         
         const countElement = document.getElementById('services-count');
         if (countElement) {
-            countElement.textContent = `Всего: ${this.filteredServices.length}`;
+            countElement.textContent = `Всего: ${this.filteredZones.length}`;
         }
     }
     
-    showTemplatesModal() {
-        const templateZone = {
-            title: "Стандартная зона",
-            price: "200",
-            maxWeight: "до 7000 кг",
-            deliveryTime: "3-4 дня",
-            insurance: "Включено"
-        };
-        const templates = createTemplateZones(3, templateZone);
-        
-        const modal = document.getElementById('templates-modal');
-        const templatesList = document.getElementById('templates-list');
-        
-        if (templatesList) {
-            templatesList.innerHTML = templates.map((t, index) => `
-                <div style="background: var(--gray-bg); padding: 12px; margin-bottom: 10px; border-left: 3px solid var(--gold);">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span style="font-weight: 700; color: var(--purple);">Зона ${index + 1}</span>
-                        <span style="font-size: 12px;">ID: ${t.id}</span>
-                    </div>
-                    <div style="font-size: 13px; margin-bottom: 5px;"><strong>${t.title}</strong></div>
-                    <div style="font-size: 12px; color: var(--gray);">Цена: ${t.price} ₽</div>
-                    <div style="font-size: 12px; color: var(--gray);">Вес: ${t.maxWeight}</div>
-                    <div style="font-size: 12px; color: var(--gray);">Срок: ${t.deliveryTime}</div>
-                    <div style="font-size: 12px; color: var(--gray);">Страхование: ${t.insurance}</div>
-                </div>
-            `).join('');
-        }
-        
-        if (modal) {
-            modal.style.display = 'flex';
-        }
-    }
-    
-    closeTemplatesModal() {
-        const modal = document.getElementById('templates-modal');
-        if (modal) {
-            modal.style.display = 'none';
-        }
-    }
-    
-    clickCard(serviceId) {
-        const servicePage = new ServicePage(this.parent, serviceId, this.toast, this.services);
+    clickCard(zoneId) {
+        const servicePage = new ServicePage(this.parent, zoneId, this.toast, this.rate_zones);
         servicePage.render();
     }
     
@@ -359,8 +300,6 @@ export class MainPage {
         const searchBtn = document.getElementById('search-btn');
         const searchInput = document.getElementById('search-input');
         const addBtn = document.getElementById('add-card-btn');
-        const showTemplatesBtn = document.getElementById('show-templates-btn');
-        const closeModalBtn = document.getElementById('close-modal-btn');
         
         if (searchBtn) {
             searchBtn.addEventListener('click', () => {
@@ -381,24 +320,5 @@ export class MainPage {
                 this.copyFirstCard();
             });
         }
-        
-        if (showTemplatesBtn) {
-            showTemplatesBtn.addEventListener('click', () => {
-                this.showTemplatesModal();
-            });
-        }
-        
-        if (closeModalBtn) {
-            closeModalBtn.addEventListener('click', () => {
-                this.closeTemplatesModal();
-            });
-        }
-        
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('templates-modal');
-            if (e.target === modal) {
-                this.closeTemplatesModal();
-            }
-        });
     }
 }
