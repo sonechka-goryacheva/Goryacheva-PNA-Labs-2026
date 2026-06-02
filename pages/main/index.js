@@ -1,14 +1,14 @@
-import { ServiceCardComponent } from "../../components/service-card/index.js";
+import { RateZoneCardComponent } from "../../components/rate_zone_card/index.js";
 import { CalculatorComponent } from "../../components/calculator/index.js";
-import { ServicePage } from "../service/index.js";
+import { RateZonePage } from "../rate_zone/index.js";
 import { ToastComponent } from "../../components/toast/index.js";
 
 export class MainPage {
     constructor(parent) {
         this.parent = parent;
         this.toast = new ToastComponent();
-        this.rate_zones = this.getInitialData();           // ← rate_zones
-        this.filteredZones = [...this.rate_zones];        // ← filteredZones
+        this.rate_zones = this.getInitialData();
+        this.filteredZones = [...this.rate_zones];
         this.nextId = 7;
     }
     
@@ -142,6 +142,7 @@ export class MainPage {
             }
         ];
     }
+    
     addNewCard() {
         const firstZone = this.rate_zones[0];
         if (!firstZone) return;
@@ -155,38 +156,32 @@ export class MainPage {
         
         this.rate_zones.push(newZone);
         this.filteredZones = [...this.rate_zones];
-        this.renderServices();
-        
+        this.renderZones();
     }
-    
-
     
     deleteCard(cardId) {
-        const zoneToDelete = this.rate_zones.find(s => s.id === cardId);
+        const zoneToDelete = this.rate_zones.find(z => z.id === cardId);
         if (!zoneToDelete) return;
         
-        this.rate_zones = this.rate_zones.filter(s => s.id !== cardId);
-        this.filteredZones = this.filteredZones.filter(s => s.id !== cardId);
-        this.renderServices();
-        
+        this.rate_zones = this.rate_zones.filter(z => z.id !== cardId);
+        this.filteredZones = this.filteredZones.filter(z => z.id !== cardId);
+        this.renderZones();
     }
     
-    searchServices(searchTerm) {
+    searchZones(searchTerm) {
         if (!searchTerm.trim()) {
             this.filteredZones = [...this.rate_zones];
-            this.renderServices();
+            this.renderZones();
             return;
         }
         
         const searchPrice = parseInt(searchTerm.trim());
         
-        // Проверка на отрицательное число
         if (searchPrice < 0) {
             this.toast.show("Цена не может быть отрицательной", "Ошибка поиска");
             return;
         }
         
-        // Проверка на не число
         if (isNaN(searchPrice)) {
             this.toast.show("Введите числовое значение цены", "Ошибка поиска");
             return;
@@ -197,9 +192,8 @@ export class MainPage {
             return zonePrice === searchPrice;
         });
         
-        this.renderServices();
+        this.renderZones();
         
-        // Уведомление только если ничего не найдено
         if (this.filteredZones.length === 0) {
             this.toast.show(`Зон с ценой ${searchPrice} ₽ не найдено`, "Результаты поиска");
         }
@@ -235,7 +229,7 @@ export class MainPage {
                         <div class="section-title-wrapper">
                             <div>
                                 <div class="section-title">Тарифные зоны</div>
-                                <div class="section-subtitle" id="services-count">Всего: ${this.filteredZones.length}</div>
+                                <div class="section-subtitle" id="zones-count">Всего: ${this.filteredZones.length}</div>
                             </div>
                         </div>
                     </div>
@@ -245,26 +239,26 @@ export class MainPage {
         `;
     }
     
-    renderServices() {
+    renderZones() {
         const pageRoot = this.pageRoot;
         if (!pageRoot) return;
         
         pageRoot.innerHTML = '';
         
         this.filteredZones.forEach((zone) => {
-            const serviceCard = new ServiceCardComponent(pageRoot);
-            serviceCard.render(zone, this.clickCard.bind(this), this.deleteCard.bind(this));
+            const zoneCard = new RateZoneCardComponent(pageRoot);
+            zoneCard.render(zone, this.clickCard.bind(this), this.deleteCard.bind(this));
         });
         
-        const countElement = document.getElementById('services-count');
+        const countElement = document.getElementById('zones-count');
         if (countElement) {
             countElement.textContent = `Всего: ${this.filteredZones.length}`;
         }
     }
     
     clickCard(zoneId) {
-        const servicePage = new ServicePage(this.parent, zoneId, this.toast, this.rate_zones);
-        servicePage.render();
+        const rateZonePage = new RateZonePage(this.parent, zoneId, this.toast, this.rate_zones);
+        rateZonePage.render();
     }
     
     render() {
@@ -276,7 +270,7 @@ export class MainPage {
         const calculator = new CalculatorComponent(calculatorContainer);
         calculator.render(this.toast.show.bind(this.toast));
         
-        this.renderServices();
+        this.renderZones();
         
         const searchBtn = document.getElementById('search-btn');
         const searchInput = document.getElementById('search-input');
@@ -284,14 +278,14 @@ export class MainPage {
         
         if (searchBtn) {
             searchBtn.addEventListener('click', () => {
-                this.searchServices(searchInput.value);
+                this.searchZones(searchInput.value);
             });
         }
         
         if (searchInput) {
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
-                    this.searchServices(searchInput.value);
+                    this.searchZones(searchInput.value);
                 }
             });
         }

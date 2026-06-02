@@ -1,17 +1,17 @@
-import { ServiceDetailComponent } from "../../components/service-detail/index.js";
+import { RateZoneDetailComponent } from "../../components/rate_zone_detail/index.js";
 import { BackButtonComponent } from "../../components/back-button/index.js";
 import { MainPage } from "../main/index.js";
 
-export class ServicePage {
-    constructor(parent, serviceId, toast, allServices) {
+export class RateZonePage {
+    constructor(parent, zoneId, toast, allZones) {
         this.parent = parent;
-        this.serviceId = serviceId;
+        this.zoneId = zoneId;
         this.toast = toast;
-        this.allServices = allServices;
+        this.allZones = allZones;
     }
     
     getData() {
-        const services = {
+        const zones = {
             1: {
                 id: 1,
                 title: "Тарифная зона 1 (Европа)",
@@ -122,7 +122,7 @@ export class ServicePage {
             }
         };
         
-        return services[this.serviceId] || services[1];
+        return zones[this.zoneId] || zones[1];
     }
     
     getHTML() {
@@ -132,7 +132,7 @@ export class ServicePage {
                     <div id="back-button-container"></div>
                 </div>
                 <div class="detail-card">
-                    <div id="service-page" class="detail-container"></div>
+                    <div id="rate-zone-page" class="detail-container"></div>
                 </div>
             </div>
         `;
@@ -152,9 +152,9 @@ export class ServicePage {
         const backButton = new BackButtonComponent(backButtonContainer);
         backButton.render(this.clickBack.bind(this));
         
-        const pageRoot = document.getElementById('service-page');
-        const serviceData = this.getData();
-        const serviceDetail = new ServiceDetailComponent(pageRoot);
-        serviceDetail.render(serviceData, this.toast.show.bind(this.toast));
+        const pageRoot = document.getElementById('rate-zone-page');
+        const zoneData = this.getData();
+        const zoneDetail = new RateZoneDetailComponent(pageRoot);
+        zoneDetail.render(zoneData, this.toast.show.bind(this.toast));
     }
 }

@@ -1,11 +1,10 @@
-export class ServiceCardComponent {
+export class RateZoneCardComponent {
     constructor(parent) {
         this.parent = parent;
     }
     
     getIcon(category) {
         const icons = {
-            // Самолет для авиадоставки
             'Авиа': `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                         <path d="M12 2L12 7M12 2L9 5M12 2L15 5"/>
                         <path d="M5 12L19 12"/>
@@ -14,20 +13,16 @@ export class ServiceCardComponent {
                         <path d="M6 12L4 17"/>
                         <path d="M18 12L20 17"/>
                      </svg>`,
-            // Часы для экспресс
             'Экспресс': `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                             <circle cx="12" cy="12" r="9"/>
                             <polyline points="12 7 12 12 15 15"/>
                          </svg>`,
-            // Документ для таможни
             'Документы': `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                             <path d="M4 4H20V20H4V4Z"/>
                             <path d="M8 7H16"/>
                             <path d="M8 11H16"/>
                             <path d="M8 15H12"/>
                          </svg>`,
-
-
         };
         return icons[category] || icons['Авиа'];
     }
@@ -73,7 +68,7 @@ export class ServiceCardComponent {
                         <small>/${data.unit}</small>
                     </div>
                 <div style="display: flex; gap: 10px; margin-top: auto;">
-                    <button class="card-btn" data-id="${data.id}" style=flex: 1;">
+                    <button class="card-btn" data-id="${data.id}" style="flex: 1;">
                         Подробнее
                         <span class="btn-arrow">→</span>
                     </button>

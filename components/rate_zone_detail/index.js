@@ -1,4 +1,4 @@
-export class ServiceDetailComponent {
+export class RateZoneDetailComponent {
     constructor(parent) {
         this.parent = parent;
     }
@@ -52,12 +52,10 @@ export class ServiceDetailComponent {
     getHTML(data) {
         let titleIcon = this.getDetailIcon('category', data.category);
         
-        // Генерация списка стран
         const countriesList = data.countries.map(country => 
             `<div class="country-item">${this.getDetailIcon('country')} ${country}</div>`
         ).join('');
         
-        // Генерация карточек самолетов
         const aircraftsList = data.aircrafts.map(aircraft => `
             <div class="aircraft-card">
                 <div class="aircraft-name"> ${aircraft.name}</div>
@@ -69,7 +67,6 @@ export class ServiceDetailComponent {
         return `
             <div class="row">
                 <div class="col-md-5">
-                    <!-- ↓↓↓ СЮДА ВСТАВЬТЕ СВОЕ ФОТО ДЛЯ КАЖДОЙ ЗОНЫ ↓↓↓ -->
                     <img src="${data.image}" class="detail-image" alt="${data.title}">
                 </div>
                 <div class="col-md-7">
@@ -99,17 +96,15 @@ export class ServiceDetailComponent {
                         </div>
                     </div>
                     
-                    <!-- Блок стран -->
                     <div style="margin-top: 20px;">
-                        <div style="font-weight: 600; color: var(--purple); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; margin-left: -8px;"">
-                            ${this.getDetailIcon('country','small')}Страны доставки:
+                        <div style="font-weight: 600; color: var(--purple); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; margin-left: -8px;">
+                            ${this.getDetailIcon('country')}Страны доставки:
                         </div>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
                             ${countriesList}
                         </div>
                     </div>
                     
-                    <!-- Блок самолетов -->
                     <div style="margin-top: 20px;">
                         <div style="font-weight: 600; color: var(--purple); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
                             Рекомендуемые типы воздушных судов:
