@@ -2,7 +2,6 @@ import { ServiceCardComponent } from "../../components/service-card/index.js";
 import { CalculatorComponent } from "../../components/calculator/index.js";
 import { ServicePage } from "../service/index.js";
 import { ToastComponent } from "../../components/toast/index.js";
-import { isEqualTariffZone, getExcludedZones, mergeTariffData } from "../../utils/helpers.js";
 
 export class MainPage {
     constructor(parent) {
@@ -143,36 +142,24 @@ export class MainPage {
             }
         ];
     }
-    
-    copyFirstCard() {
+    addNewCard() {
         const firstZone = this.rate_zones[0];
         if (!firstZone) return;
         
-        const isDuplicate = this.rate_zones.some(zone => 
-            isEqualTariffZone(zone, firstZone)
-        );
-        
-        if (isDuplicate) {
-            this.toast.show("Такая тарифная зона уже существует! Копирование отменено.", "Ошибка");
-            return;
-        }
-        
-        const metaData = {
-            copiedAt: new Date().toLocaleString(),
-            source: "копия"
+        const newZone = {
+            ...firstZone,
+            id: this.nextId++,
+            title: `${firstZone.title} (копия)`,
+            shortDesc: `${firstZone.shortDesc} (добавлено ${new Date().toLocaleTimeString()})`
         };
-        
-        const newZone = mergeTariffData(
-            { ...firstZone, id: this.nextId++ },
-            { title: `${firstZone.title} (копия)`, shortDesc: `${firstZone.shortDesc} (добавлено)` },
-            metaData
-        );
         
         this.rate_zones.push(newZone);
         this.filteredZones = [...this.rate_zones];
         this.renderServices();
         this.toast.show(`Тарифная зона "${newZone.title}" добавлена`, "Карточка создана");
     }
+    
+
     
     deleteCard(cardId) {
         const zoneToDelete = this.rate_zones.find(s => s.id === cardId);
@@ -188,17 +175,18 @@ export class MainPage {
         if (!searchTerm.trim()) {
             this.filteredZones = [...this.rate_zones];
             this.renderServices();
-            this.toast.show(`Показаны все ${this.rate_zones.length} зон`, "Сброс поиска");
             return;
         }
         
         const searchPrice = parseInt(searchTerm.trim());
         
+        // Проверка на отрицательное число
         if (searchPrice < 0) {
             this.toast.show("Цена не может быть отрицательной", "Ошибка поиска");
             return;
         }
         
+        // Проверка на не число
         if (isNaN(searchPrice)) {
             this.toast.show("Введите числовое значение цены", "Ошибка поиска");
             return;
@@ -211,16 +199,9 @@ export class MainPage {
         
         this.renderServices();
         
-        const excludedZones = getExcludedZones(this.rate_zones, this.filteredZones);
-        if (excludedZones.length > 0) {
-            this.toast.show(`Исключено из поиска: ${excludedZones.length} зон`, "Результаты поиска");
-        }
-        
-        const count = this.filteredZones.length;
-        if (count === 0) {
+        // Уведомление только если ничего не найдено
+        if (this.filteredZones.length === 0) {
             this.toast.show(`Зон с ценой ${searchPrice} ₽ не найдено`, "Результаты поиска");
-        } else {
-            this.toast.show(`Найдено ${count} зон с ценой ${searchPrice} ₽`, "Результаты поиска");
         }
     }
     
@@ -317,7 +298,7 @@ export class MainPage {
         
         if (addBtn) {
             addBtn.addEventListener('click', () => {
-                this.copyFirstCard();
+                this.addNewCard();
             });
         }
     }
