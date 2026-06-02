@@ -156,7 +156,7 @@ export class MainPage {
         this.rate_zones.push(newZone);
         this.filteredZones = [...this.rate_zones];
         this.renderServices();
-        this.toast.show(`Тарифная зона "${newZone.title}" добавлена`, "Карточка создана");
+        
     }
     
 
@@ -168,7 +168,7 @@ export class MainPage {
         this.rate_zones = this.rate_zones.filter(s => s.id !== cardId);
         this.filteredZones = this.filteredZones.filter(s => s.id !== cardId);
         this.renderServices();
-        this.toast.show(`Тарифная зона "${zoneToDelete.title}" удалена`, "Карточка удалена");
+        
     }
     
     searchServices(searchTerm) {
