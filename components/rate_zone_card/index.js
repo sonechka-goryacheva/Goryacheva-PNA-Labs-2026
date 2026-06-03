@@ -1,11 +1,14 @@
-export class ServiceCardComponent {
+// components/rate_zone_card/index.js
+// Компонент карточки тарифной зоны для главной страницы.
+// В рамках ЛР №5 (Вариант 1) кнопка удаления из карточки убрана —
+// удаление теперь выполняется на детальной странице.
+export class RateZoneCardComponent {
     constructor(parent) {
         this.parent = parent;
     }
     
     getIcon(category) {
         const icons = {
-            // Самолет для авиадоставки
             'Авиа': `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                         <path d="M12 2L12 7M12 2L9 5M12 2L15 5"/>
                         <path d="M5 12L19 12"/>
@@ -14,20 +17,16 @@ export class ServiceCardComponent {
                         <path d="M6 12L4 17"/>
                         <path d="M18 12L20 17"/>
                      </svg>`,
-            // Часы для экспресс
             'Экспресс': `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                             <circle cx="12" cy="12" r="9"/>
                             <polyline points="12 7 12 12 15 15"/>
                          </svg>`,
-            // Документ для таможни
             'Документы': `<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none">
                             <path d="M4 4H20V20H4V4Z"/>
                             <path d="M8 7H16"/>
                             <path d="M8 11H16"/>
                             <path d="M8 15H12"/>
                          </svg>`,
-
-
         };
         return icons[category] || icons['Авиа'];
     }
@@ -47,6 +46,7 @@ export class ServiceCardComponent {
     }
     
     getHTML(data) {
+        // Блок с кнопкой "Удалить" удалён — оставлена только кнопка "Подробнее".
         return `
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="modern-card" data-id="${data.id}">
@@ -72,20 +72,19 @@ export class ServiceCardComponent {
                         от ${data.price} ₽
                         <small>/${data.unit}</small>
                     </div>
-                <div style="display: flex; gap: 10px; margin-top: auto;">
-                    <button class="card-btn" data-id="${data.id}" style=flex: 1;">
-                        Подробнее
-                        <span class="btn-arrow">→</span>
-                    </button>
-                    <button class="card-btn-delete" data-id="${data.id}" style="flex: 1;">
-                        Удалить
-                    </button>
+                    <div style="display: flex; gap: 10px; margin-top: auto;">
+                        <button class="card-btn" data-id="${data.id}" style="flex: 1;">
+                            Подробнее
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
     }
     
-    addListeners(data, clickListener, deleteListener) {
+    addListeners(data, clickListener) {
+        // Обработчик кнопки "Подробнее".
         const button = document.querySelector(`.card-btn[data-id="${data.id}"]`);
         if (button) {
             button.addEventListener("click", (e) => {
@@ -94,28 +93,20 @@ export class ServiceCardComponent {
             });
         }
         
-        const deleteBtn = document.querySelector(`.card-btn-delete[data-id="${data.id}"]`);
-        if (deleteBtn) {
-            deleteBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                deleteListener(data.id);
-            });
-        }
-        
+        // Клик по самой карточке также открывает детальную страницу.
         const card = document.querySelector(`.modern-card[data-id="${data.id}"]`);
         if (card) {
             card.addEventListener("click", (e) => {
-                if (!e.target.classList.contains('card-btn') && 
-                    !e.target.classList.contains('card-btn-delete')) {
+                if (!e.target.classList.contains('card-btn')) {
                     clickListener(data.id);
                 }
             });
         }
     }
     
-    render(data, clickListener, deleteListener) {
+    render(data, clickListener) {
         const html = this.getHTML(data);
         this.parent.insertAdjacentHTML('beforeend', html);
-        this.addListeners(data, clickListener, deleteListener);
+        this.addListeners(data, clickListener);
     }
 }
